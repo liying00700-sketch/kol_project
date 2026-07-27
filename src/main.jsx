@@ -16,24 +16,26 @@ import './modules.css'
 import './fixes.css'
 import './bi-v2.css'
 import './flow-v3.css'
+import './flow-v4.css'
 
 const navGroups = [
   { no:'01', title:'StarAgent 智能工作台', items:[[Sparkles, '智能工作台', 'agent']] },
   { no:'02', title:'动作中心', items:[[ClipboardCheck, '待办与快捷动作', 'actions'], [Users, '红人资源', 'actionInfluencers'], [Package, '产品中心', 'productCenter'], [Handshake, '合作管理', 'cooperations'], [CircleDollarSign, '费用结算', 'settlements'], [Percent, '折扣码管理', 'discounts'], [Layers, 'Campaign 管理', 'campaigns']] },
-  { no:'03', title:'增长放大', items:[[Network, '品牌影响', 'brand'], [Route, '跨平台引流', 'crosschannel'], [Megaphone, '广告与素材放大', 'ads'], [Brain, 'VOC 与用户心智', 'voc']] },
-  { no:'04', title:'BI 中心', items:[[LayoutDashboard, '经营驾驶舱', 'dashboard'], [Users, '红人资产', 'influencers'], [Boxes, '合作资产', 'cooperationAsset'], [Film, '内容资产', 'contents'], [MessageCircleMore, '消费者资产', 'consumer'], [Radar, '竞品监控', 'competitor'], [BarChart3, 'Campaign 复盘', 'campaign']] },
+  { no:'03', title:'增长放大', items:[[Network, '品牌影响', 'brand'], [Route, '跨平台引流', 'crosschannel'], [Megaphone, '内容资产与广告放大', 'ads'], [Brain, 'VOC 与用户心智', 'voc']] },
+  { no:'04', title:'BI 中心', items:[[LayoutDashboard, '经营驾驶舱', 'dashboard'], [Sparkles, '智能问数', 'askData'], [ShoppingBag, '销售与转化', 'salesConversion'], [Users, '红人资产', 'influencers'], [Boxes, '合作资产', 'cooperationAsset'], [MessageCircleMore, '消费者资产', 'consumer'], [Radar, '竞品监控', 'competitor'], [BarChart3, 'Campaign 复盘', 'campaign']] },
   { no:'05', title:'管理', items:[[Database, '数据与模型', 'data'], [Settings, '系统设置', 'settings']] },
 ]
 
 const pageMeta = {
   agent: ['01 · StarAgent 智能工作台', '把目标说出来，方案交给星链'], actions: ['02 · 动作中心', '今天需要推进的动作'],
   actionInfluencers: ['02 · 动作中心 / 红人资源', '从大资源池到精准合作人选'], productCenter: ['02 · 动作中心 / 产品中心', '从产品策略到匹配与执行'],
+  askData: ['04 · BI 中心 / 智能问数', '用自然语言直接问经营数据'], salesConversion: ['04 · BI 中心 / 销售与转化', '看清红人带来的销售效率'],
   dashboard: ['04 · BI 中心 / 经营驾驶舱', '红人营销全域经营驾驶舱'], growthloop: ['Closed-loop operations', '从产品策略到模型回写'], bi: ['BI center', '从数据里找到下一步'],
   market: ['Market discovery', '外部发现与企业候选分层'],
   influencers: ['04 · BI 中心 / 红人资产', '红人资产与完整能力画像'], cooperations: ['02 · 动作中心 / 合作管理', '把合作流程变成可推进的任务'], cooperationAsset: ['04 · BI 中心 / 合作资产', '把每次合作沉淀为长期资产'],
   contents: ['Content asset', '内容验证与素材资产'], products: ['Product & scene', '产品、场景与卖点验证'], productgraph: ['Relationship intelligence', '产品—红人关系与任务匹配'],
   brand: ['03 · 增长放大 / 品牌影响', '品牌传播与用户心智影响'], crosschannel: ['03 · 增长放大 / 跨平台引流', '跨平台引流与辅助贡献'],
-  ads: ['03 · 增长放大 / 广告与素材放大', '把高价值合作对象推入广告增长'], voc: ['03 · 增长放大 / VOC 与用户心智', '看见用户认知如何变化'],
+  ads: ['03 · 增长放大 / 内容资产与广告放大', '从内容验证到广告增长'], voc: ['03 · 增长放大 / VOC 与用户心智', '看见用户认知如何变化'],
   settlements: ['02 · 动作中心 / 费用结算', '从申请到付款，全程可追踪'], discounts: ['02 · 动作中心 / 折扣码管理', '折扣、归因与渠道表现统一管理'],
   consumer: ['04 · BI 中心 / 消费者资产', '把每一次反馈沉淀为人群与心智资产'], competitor: ['04 · BI 中心 / 竞品监控', '持续看见竞品、红人与内容策略变化'],
   campaigns: ['02 · 动作中心 / Campaign 管理', 'Campaign 计划与执行'], campaign: ['04 · BI 中心 / Campaign 复盘', '复盘真正创造的全域价值'],
@@ -46,7 +48,7 @@ const creators = [
   { id: 3, name: '阿Moon的日常', handle: '生活方式 · 新手妈妈', initials: 'M', color: '#C9C3E1', score: 86, cost: 1500, role: '真实体验', reach: '9.8万', reason: '真实生活叙事完整，评论区关于便携和夜间使用的讨论密度高。', evidence: '有效评论样本 426 条', risk: '需确认授权' },
 ]
 
-const quickPrompts = ['找适合新品传播的红人', '找近期可放大的素材', '分析本月预算效率']
+const quickPrompts = ['找适合新品传播的红人', '生成红人 + 产品 + 视频方案', '问本月销售与 ROI']
 
 function App() {
   const [active, setActive] = useState('agent')
@@ -116,37 +118,24 @@ function App() {
           <section className="plan-section">
             <div className="plan-title"><div><span className="kicker">推荐方案 · 01</span><h2>用真实场景建立记忆，<br/>再用专业内容加深信任。</h2></div><div className="plan-controls"><div className="segment">{['保守方案','均衡方案','进取方案'].map(x=><button className={strategy===x?'active':''} onClick={()=>setStrategy(x)} key={x}>{x}</button>)}</div><button className="icon-button"><MoreHorizontal size={18}/></button></div></div>
 
-            <div className="plan-grid">
-              <div className="portfolio">
-                <div className="portfolio-head"><div><h3>红人组合</h3><span>{selected.length} 位已选择</span></div><button><SlidersHorizontal size={15}/> 筛选候选</button></div>
-                {creators.map((c, index)=><article className={`creator ${selected.includes(c.id)?'selected':''}`} key={c.id}>
-                  <button className="check" onClick={()=>setSelected(s=>s.includes(c.id)?s.filter(x=>x!==c.id):[...s,c.id])}>{selected.includes(c.id)?<Check size={13}/>:null}</button>
-                  <div className="avatar" style={{background:c.color}}>{c.initials}<i></i></div>
-                  <div className="creator-main"><div className="creator-name"><h4>{c.name}</h4><span>{c.role}</span></div><p>{c.handle}</p><p className="reason">{c.reason}</p><button className="evidence-link" onClick={()=>setEvidence(c)}><ShieldCheck size={14}/>{c.evidence}<ChevronRight size={13}/></button></div>
-                  <div className="creator-metrics"><div><b>{c.score}</b><small>匹配分</small></div><div><b>{c.reach}</b><small>预估触达</small></div><div><b>¥{c.cost.toLocaleString()}</b><small>预估费用</small></div><button onClick={()=>showToast(`正在为你寻找 ${c.name} 的替代人选`)}><RefreshCw size={14}/> 替换</button></div>
-                </article>)}
-                <button className="more-candidates"><Plus size={16}/> 查看 12 位备选红人</button>
-              </div>
-
-              <aside className="plan-aside">
-                <div className="budget-card">
-                  <div className="mini-head"><h3>预算分配</h3><span>可调整</span></div>
-                  <div className="budget-total"><span>已规划</span><b>¥{(total+1500).toLocaleString()}<small> / ¥10,000</small></b></div>
-                  <div className="budget-bar"><i style={{width:`${Math.min((total+1500)/100,100)}%`}}></i></div>
-                  <ul><li><span><i className="pink"></i>红人合作</span><b>¥{total.toLocaleString()}</b></li><li><span><i className="sand"></i>样品与物流</span><b>¥600</b></li><li><span><i className="mint"></i>素材授权预留</span><b>¥900</b></li><li className="remain"><span>机动预算</span><b>¥{Math.max(10000-total-1500,0).toLocaleString()}</b></li></ul>
-                </div>
-                <div className="impact-card"><div className="mini-head"><h3>预期传播效果</h3><span className="confidence">证据中等</span></div><div className="impact-main"><small>预计有效触达</small><b>42–56万</b><span>相较同预算历史均值 <strong>+18%</strong></span></div><div className="impact-row"><span>收藏 / 播放比<b>2.8%–3.5%</b></span><span>可沉淀素材<b>3–5 条</b></span></div><button onClick={()=>setEvidence({name:'方案证据链',score:87, evidence:'共使用 38 条数据证据', reason:'结合近 90 天同品类内容、候选红人受众画像、历史合作成本和品牌安全记录生成。', risk:'证据中等'})}><ShieldCheck size={15}/> 查看完整证据链</button></div>
-                <div className="content-angle"><div><Film size={17}/><h3>建议内容角度</h3></div><p>「背奶不是狼狈的坚持，而是职场妈妈重新拿回时间。」</p><div><span>#职场背奶</span><span>#轻松泵奶</span></div></div>
-              </aside>
-            </div>
-
-            <section className="solution-blueprint">
+            <section className="solution-blueprint integrated-solution">
               <div className="solution-blueprint-head"><div><span><Sparkles size={15}/> STARAGENT 完整合作方案</span><h3>找谁合作、合作什么、怎么拍，已经组合成可执行 Brief。</h3></div><button onClick={()=>setEvidence({name:'完整合作方案证据链',score:91,evidence:'红人、产品与内容结构共 62 条证据',reason:'方案同时使用产品策略、红人历史表现、受众质量、自然内容结构与广告迁移结果。',risk:'内容结构为建议模板，发送前需要结合红人表达习惯确认'})}><ShieldCheck size={14}/> 62 条组合证据</button></div>
-              <div className="solution-columns">
-                <article className="solution-product"><span className="solution-no">01 · 合作产品</span><div className="product-lockup"><i><Package size={23}/></i><div><h4>M5 可穿戴吸奶器</h4><p>美国市场 · 职场背奶场景</p></div><strong>96<small>匹配</small></strong></div><div className="solution-tags"><span>免手扶</span><span>静音</span><span>贴身便携</span><span>可授权素材</span></div><p className="solution-why"><Lightbulb size={15}/>当前任务优先建立“职场可用”记忆，M5 的已验证场景证据最完整。</p></article>
-                <article className="solution-people"><span className="solution-no">02 · 红人分工</span>{creators.filter(c=>selected.includes(c.id)).map((c,i)=><div key={c.id}><span style={{background:c.color}}>{c.initials}</span><b>{c.name}<small>{c.role} · {['制造场景共鸣','建立专业信任','完成真实验证'][i]}</small></b><strong>{c.score}</strong></div>)}</article>
-                <article className="solution-script"><span className="solution-no">03 · 视频内容结构</span><div className="script-timeline">{[['0–3s','冲突开场','“两场会议之间，我只有 18 分钟背奶。”'],['3–10s','场景代入','办公桌、通勤包与真实时间压力'],['10–28s','产品演示','免手扶穿戴 + 静音对比 + 工作流'],['28–38s','可信证明','真实泵奶结果 / 专业解释 / 细节近景'],['38–45s','记忆与行动','“不必离开工作，也能照顾好自己。”']].map((x,i)=><div key={x[0]}><span>{x[0]}</span><i className={i<2?'active':''}></i><b>{x[1]}<small>{x[2]}</small></b></div>)}</div></article>
+              <article className="integrated-who">
+                <div className="integrated-section-head"><div><span className="solution-no">01 · 找谁合作</span><h3>三种角色共同完成场景记忆、专业信任和真实验证</h3></div><div><span>{selected.length} 位已选择</span><button onClick={()=>setActive('actionInfluencers')}><SlidersHorizontal size={14}/>打开红人资源</button></div></div>
+                <div className="integrated-creator-list">{creators.map((c,i)=><article className={selected.includes(c.id)?'selected':''} key={c.id}>
+                  <button className="check" onClick={()=>setSelected(s=>s.includes(c.id)?s.filter(x=>x!==c.id):[...s,c.id])}>{selected.includes(c.id)&&<Check size={12}/>}</button>
+                  <div className="avatar" style={{background:c.color}}>{c.initials}<i></i></div>
+                  <div className="integrated-creator-main"><div><h4>{c.name}</h4><span>{c.role}</span><em>{['主传播位','信任解释位','真实体验位'][i]}</em></div><p>{c.handle} · {c.reason}</p><button onClick={()=>setEvidence(c)}><ShieldCheck size={13}/>{c.evidence}<ChevronRight size={12}/></button></div>
+                  <div className="integrated-creator-data"><span><b>{c.score}</b><small>任务匹配</small></span><span><b>{c.reach}</b><small>预估触达</small></span><span><b>{['92','88','76'][i]}</b><small>品牌影响</small></span><span><b>{['7.4x','6.9x','5.8x'][i]}</b><small>历史 ROI</small></span><span><b>¥{c.cost.toLocaleString()}</b><small>预估费用</small></span></div>
+                  <button className="replace-creator" onClick={()=>showToast(`正在为你寻找 ${c.name} 的替代人选`)}><RefreshCw size={13}/>替换</button>
+                </article>)}</div>
+                <button className="integrated-more" onClick={()=>setActive('actionInfluencers')}><Plus size={14}/>查看 12 位备选红人和完整表现数据</button>
+              </article>
+              <div className="integrated-what-how">
+                <article className="solution-product"><span className="solution-no">02 · 合作什么</span><div className="product-lockup"><i><Package size={23}/></i><div><h4>M5 可穿戴吸奶器</h4><p>美国市场 · 职场背奶场景</p></div><strong>96<small>匹配</small></strong></div><div className="solution-tags"><span>免手扶</span><span>静音</span><span>贴身便携</span><span>可授权素材</span></div><p className="solution-why"><Lightbulb size={15}/>当前任务优先建立“职场可用”记忆，M5 的场景与内容证据最完整。</p></article>
+                <article className="solution-script"><span className="solution-no">03 · 怎么拍</span><div className="script-timeline">{[['0–3s','冲突开场','“两场会议之间，我只有 18 分钟背奶。”'],['3–10s','场景代入','办公桌、通勤包与真实时间压力'],['10–28s','产品演示','免手扶穿戴 + 静音对比 + 工作流'],['28–38s','可信证明','真实泵奶结果 / 专业解释 / 细节近景'],['38–45s','记忆与行动','“不必离开工作，也能照顾好自己。”']].map((x,i)=><div key={x[0]}><span>{x[0]}</span><i className={i<2?'active':''}></i><b>{x[1]}<small>{x[2]}</small></b></div>)}</div></article>
               </div>
+              <div className="integrated-outcome">{[['已规划预算',`¥${(total+1500).toLocaleString()} / ¥10,000`],['预计有效触达','42–56万'],['可沉淀素材','3–5 条'],['建议授权预留','¥900'],['方案证据强度','91 / 100']].map(x=><span key={x[0]}><small>{x[0]}</small><b>{x[1]}</b></span>)}</div>
             </section>
 
             <div className="next-action"><div><span className="next-icon"><CircleCheck size={20}/></span><div><h3>方案已准备好，可以进入执行</h3><p>红人、产品、视频结构和数据证据会随合作一起带入，不需要重复录入。</p></div></div><div><button className="secondary" onClick={()=>showToast('已保存至方案库，可继续协作编辑')}><FileText size={16}/> 保存方案</button><button className="secondary" onClick={()=>{showToast('已创建合作草稿，并带入产品与内容 Brief');setActive('cooperations')}}><Handshake size={16}/> 创建合作</button><button className="primary" onClick={()=>setOutreach(true)}><UserPlus size={16}/> 一键生成建联</button></div></div>
@@ -217,6 +206,8 @@ function PageHeader({ eyebrow, title, desc, action='导出报告', onAction }) {
 
 function ModulePage({ active, setActive, showToast, setEvidence }) {
   if (active === 'dashboard') return <DashboardPage showToast={showToast} setEvidence={setEvidence} setActive={setActive}/>
+  if (active === 'askData') return <AskDataPage showToast={showToast} setActive={setActive}/>
+  if (active === 'salesConversion') return <SalesConversionPage showToast={showToast} setActive={setActive}/>
   if (active === 'growthloop') return <GrowthLoopPage showToast={showToast} setActive={setActive}/>
   if (active === 'bi') return <BIPage showToast={showToast}/>
   if (active === 'market') return <MarketCandidatePage showToast={showToast} setActive={setActive} setEvidence={setEvidence}/>
@@ -450,6 +441,35 @@ function DashboardPage({ showToast, setEvidence, setActive }) {
   </section>
 }
 
+function SalesConversionPage({showToast,setActive}) {
+  const [metric,setMetric]=useState('GMV')
+  const salesMetrics=[['红人归因 GMV','¥8.65M','+18.4%',ShoppingBag],['有效订单','42,684','+12.6%',Receipt],['访问转化率','4.82%','+0.64pp',Target],['推广花费','¥1.29M','+15.8%',WalletCards],['综合 ROI','6.73','+0.42',TrendingUp]]
+  return <section className="module-content sales-conversion-page">
+    <PageHeader eyebrow="BI 中心 · 销售与转化" title="看清红人影响如何抵达访问、订单和收入。" desc="统一直接归因、辅助贡献和增量评估，既看 GMV 与 ROI，也解释转化发生在哪里、由谁推动。" action="导出归因报告" onAction={()=>showToast('销售与转化归因报告已生成')}/>
+    <div className="sales-metrics">{salesMetrics.map(([l,v,d,I])=><button key={l} className={metric===l.replace('红人归因 ','')?'active':''} onClick={()=>setMetric(l.replace('红人归因 ',''))}><I size={17}/><span><small>{l}</small><b>{v}</b><em>{d}</em></span></button>)}</div>
+    <div className="sales-grid"><article className="panel conversion-funnel"><div className="panel-title"><div><h3>红人影响转化漏斗</h3><p>近 30 天 · 跨平台去重</p></div><span className="confidence"><ShieldCheck size={12}/> 78% 强归因证据</span></div><div className="funnel-steps">{[['有效内容触达','286.4万','100%'],['商品详情访问','28.4万','9.9%'],['加入购物车','86,420','30.4%'],['有效订单','42,684','49.4%'],['归因 GMV','¥8.65M','6.73 ROI']].map((x,i)=><div key={x[0]} style={{width:`${100-i*10}%`}}><span>0{i+1}</span><b>{x[0]}<small>{x[1]}</small></b><em>{x[2]}</em></div>)}</div><div className="funnel-insight"><Sparkles size={15}/><p><b>最大增长杠杆：</b>商品详情访问率提升 1 个百分点，预计可新增约 ¥72 万红人归因 GMV。</p></div></article>
+      <article className="panel sales-trend"><div className="panel-title"><div><h3>GMV 与推广花费趋势</h3><p>按周 · 当前查看 {metric}</p></div><div className="chart-key"><span><i></i>GMV</span><span><i></i>推广花费</span></div></div><div className="dual-bars">{[['W1',62,26],['W2',74,31],['W3',68,29],['W4',91,38],['W5',84,34],['W6',96,39]].map(x=><div key={x[0]}><span><i style={{height:`${x[1]}%`}}></i><em style={{height:`${x[2]}%`}}></em></span><small>{x[0]}</small></div>)}</div><div className="trend-verdict"><TrendingUp size={15}/><p>W4 后 GMV 增速高于花费增速，主要来自 M5 职场场景内容与 Amazon 品牌搜索承接。</p></div></article></div>
+    <div className="sales-grid lower"><article className="panel channel-sales"><div className="panel-title"><div><h3>渠道销售贡献</h3><p>直接收入与辅助贡献分开呈现</p></div><button onClick={()=>setActive('crosschannel')}>查看完整路径</button></div>{[['Amazon','¥3.86M','44.6%','+18%'],['独立站','¥2.42M','28.0%','+24%'],['TikTok Shop','¥1.56M','18.0%','+32%'],['其他渠道','¥0.81M','9.4%','+6%']].map((x,i)=><div className="channel-sales-row" key={x[0]}><span><i className={`ch${i}`}></i><b>{x[0]}<small>较上期 {x[3]}</small></b></span><em><i style={{width:x[2]}}></i></em><strong>{x[1]}<small>{x[2]}</small></strong></div>)}</article>
+      <article className="panel roi-drivers"><div className="panel-title"><div><h3>ROI 驱动因素</h3><p>解释本期 6.73 的来源</p></div></div>{[['红人组合质量','+0.48','场景型 + 专业型双角色'],['素材迁移效率','+0.31','3 条内容跨广告复用'],['Amazon 承接','+0.24','品牌搜索与详情页访问'],['授权费用上升','-0.18','核心红人续签成本增加']].map((x,i)=><div key={x[0]}><span className={i===3?'down':''}>{i===3?<ArrowRight size={13}/>:<TrendingUp size={13}/>}</span><b>{x[0]}<small>{x[2]}</small></b><strong className={i===3?'down':''}>{x[1]}</strong></div>)}</article></div>
+    <section className="panel sales-creator-table"><div className="panel-title"><div><h3>红人销售与转化表现</h3><p>同时展示传播、访问、订单和 ROI，避免只按 GMV 排名</p></div><button onClick={()=>setActive('actionInfluencers')}>进入红人资源</button></div><div className="sales-table-head"><span>红人 / 角色</span><span>详情访问</span><span>订单</span><span>GMV</span><span>花费</span><span>ROI</span><span>辅助贡献</span><span>建议</span></div>{[['一颗小桃子','场景传播','48,620','8,426','¥2.86M','¥386K','7.41','品牌搜索 +24%','年度绑定'],['护士妈妈Kiki','专业教育','36,840','6,842','¥2.14M','¥312K','6.86','收藏转化强','扩大复投'],['阿Moon的日常','真实体验','28,460','4,928','¥1.82M','¥268K','6.79','素材价值 94','授权放大'],['在逃妈妈Yuki','跨渠引流','21,680','3,246','¥1.18M','¥184K','6.41','Amazon +17%','小额复测']].map((r,i)=><button key={r[0]} onClick={()=>setActive('influencers')}><span className="person-cell"><i>{r[0][0]}</i><b>{r[0]}<small>{r[1]}</small></b></span>{r.slice(2,8).map((x,j)=><span key={j}><b>{x}</b></span>)}<em>{r[8]}</em><ChevronRight size={13}/></button>)}</section>
+  </section>
+}
+
+function AskDataPage({showToast,setActive}) {
+  const [question,setQuestion]=useState('为什么本月 M5 的红人 ROI 提升了？哪些红人和内容结构贡献最大？')
+  const [answer,setAnswer]=useState(true)
+  const ask=()=>{if(question.trim()){setAnswer(true);showToast('已基于统一指标口径生成可视化分析')}}
+  return <section className="module-content ask-data-page">
+    <PageHeader eyebrow="BI 中心 · 智能问数" title="直接问业务问题，得到结论、原因和下一步。" desc="StarAgent 自动选择指标、维度与证据，生成可视化报告；每个答案都保留口径、数据来源与可信度。" action="我的问数记录" onAction={()=>showToast('已打开已保存的问数记录')}/>
+    <div className="ask-command"><div className="ask-orbit"><Sparkles size={22}/><i></i></div><div><span>STARAGENT DATA COPILOT</span><h3>你想从数据里知道什么？</h3></div><div className="ask-input"><textarea value={question} onChange={e=>setQuestion(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();ask()}}}/><button onClick={ask}><ArrowUp size={18}/></button></div><div className="ask-suggestions">{['对比各平台红人 ROI','找出本月增长最快的内容结构','哪些红人适合追加预算','解释 Amazon GMV 波动'].map(x=><button key={x} onClick={()=>{setQuestion(x);setAnswer(true)}}>{x}<ChevronRight size={12}/></button>)}</div></div>
+    {answer&&<><div className="answer-meta"><div><span className="live-dot">分析完成</span><p>已使用 7 个指标、4 个维度、3 个数据源 · 数据截至今天 09:42</p></div><div><button onClick={()=>showToast('分析已保存到团队问数空间')}><FileText size={13}/>保存报告</button><button onClick={()=>showToast('分享链接已复制')}><Link2 size={13}/>分享</button></div></div>
+      <section className="answer-verdict"><header><span><Sparkles size={16}/>STARAGENT 结论</span><strong>可信度 91%</strong></header><h2>M5 红人 ROI 提升主要由“组合质量”和“内容复用”驱动，不是单纯增加预算。</h2><p>本月 ROI 从 6.31 提升至 6.73。其中，场景型 + 专业型红人组合贡献约 52% 的增量，3 条自然内容迁移广告贡献约 31%。</p><div>{[['ROI','6.73','+0.42'],['增量 GMV','¥684K','+18.4%'],['关键红人','3 位','贡献 68%'],['关键结构','真实工作流','跨红人复现 4 次']].map(x=><span key={x[0]}><small>{x[0]}</small><b>{x[1]}</b><em>{x[2]}</em></span>)}</div></section>
+      <div className="answer-grid"><article className="panel answer-chart"><div className="panel-title"><div><h3>ROI 增量贡献拆解</h3><p>相较上月 · 贡献百分点</p></div><span className="confidence"><ShieldCheck size={12}/> 强证据</span></div><div className="waterfall">{[['红人组合',48,'+0.48'],['内容复用',31,'+0.31'],['渠道承接',24,'+0.24'],['授权成本',18,'-0.18'],['其他',9,'-0.09']].map((x,i)=><div key={x[0]}><span>{x[0]}</span><i><em className={i>2?'negative':''} style={{width:`${x[1]*1.8}%`}}></em></i><strong className={i>2?'negative':''}>{x[2]}</strong></div>)}</div></article>
+        <article className="panel answer-reasons"><div className="panel-title"><div><h3>原因证据链</h3><p>从结果向业务对象回溯</p></div></div>{[['01','组合质量提升','一颗小桃子负责场景传播，Kiki 负责专业解释，用户从“看到”到“相信”的路径更完整。','26 条合作与受众证据'],['02','内容结构可复现','“冲突开场 → 真实工作流 → 结果证明”跨 4 位红人复现，降低了内容试错成本。','19 条内容结构证据'],['03','渠道承接增强','品牌搜索提升后 Amazon 详情页访问同步增长，形成强辅助路径。','13 条 UTM / Attribution 证据']].map(x=><article key={x[0]}><span>{x[0]}</span><div><b>{x[1]}</b><p>{x[2]}</p><small><ShieldCheck size={11}/>{x[3]}</small></div></article>)}</article></div>
+      <section className="panel answer-actions"><div><span><Target size={18}/></span><div><small>STARAGENT 建议</small><h3>把答案直接变成下一步动作</h3></div></div>{[['追加 20% 预算给双角色组合','预计新增 GMV ¥12–18万','salesConversion'],['把 3 条验证素材推送广告端','预计降低素材测试成本 26%','ads'],['锁定 4 位核心红人 30 天排期','避免增长窗口被竞品抢占','actionInfluencers']].map(x=><button key={x[0]} onClick={()=>setActive(x[2])}><b>{x[0]}<small>{x[1]}</small></b><ArrowRight size={14}/></button>)}</section></>}
+  </section>
+}
+
 function BIPage({ showToast }) {
   const bars=[72,88,56,94,68,83,63,91,76,87,70,96]
   return <section className="module-content">
@@ -495,6 +515,7 @@ function InfluencerPage({ showToast, setEvidence }) {
 }
 
 function ActionInfluencerPage({showToast,setActive,setEvidence}) {
+  const [resourceScope,setResourceScope]=useState('外部资源')
   const [pool,setPool]=useState('精准推荐')
   const [profile,setProfile]=useState(null)
   const [selectedIds,setSelectedIds]=useState([1,2])
@@ -503,7 +524,16 @@ function ActionInfluencerPage({showToast,setActive,setEvidence}) {
   const visible=influencerAssets.filter(c=>!query||`${c.name}${c.platform}${c.market}${c.category}${c.roles.join('')}`.toLowerCase().includes(query.toLowerCase()))
   const toggle=id=>setSelectedIds(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id])
   return <section className="module-content action-resource-page">
-    <PageHeader eyebrow="动作中心 · 红人资源" title="从 3 亿资源中，找到这次值得合作的人。" desc="外部发现、企业资产、产品匹配和历史表现使用同一套红人对象；选中后可以直接生成匹配或创建合作。" action="导入红人" onAction={()=>showToast('已打开红人导入与身份校验向导')}/>
+    <PageHeader eyebrow="动作中心 · 红人资源" title="市场发现和内部资产，在同一个选人入口汇合。" desc="外部资源用于发现竞品和平台新红人；内部资源使用企业合作、内容和表现数据完成精准匹配。" action={resourceScope==='外部资源'?'新建监控':'导入红人'} onAction={()=>showToast(resourceScope==='外部资源'?'已打开社媒监控配置':'已打开红人导入与身份校验向导')}/>
+    <div className="resource-scope-tabs"><button className={resourceScope==='外部资源'?'active':''} onClick={()=>setResourceScope('外部资源')}><Globe size={17}/><span><b>外部资源</b><small>竞品品牌 · 竞品红人 · 全平台市场发现</small></span><em>1,284,620</em></button><button className={resourceScope==='内部资源'?'active':''} onClick={()=>setResourceScope('内部资源')}><Database size={17}/><span><b>内部资源</b><small>合作实绩 · 内容表现 · 企业关系资产</small></span><em>1,286</em></button></div>
+    {resourceScope==='外部资源'?<>
+      <section className="social-monitor panel"><div className="monitor-identity"><span><Radar size={21}/><i></i></span><div><small>SOCIAL LISTENING PLUGIN · 实时运行</small><h3>社媒红人雷达</h3><p>监控重点竞品的新增合作红人、内容主题和平台增速，异常信号自动进入候选池。</p></div></div><div className="monitor-platforms">{[['TikTok','2分钟前','386'],['Instagram','5分钟前','248'],['YouTube','18分钟前','92'],['小红书','32分钟前','164']].map(x=><button key={x[0]}><i></i><span><b>{x[0]}</b><small>同步于 {x[1]}</small></span><strong>{x[2]}<small>新信号</small></strong></button>)}</div><button className="monitor-config" onClick={()=>showToast('已打开监控关键词、竞品和告警阈值设置')}><Settings size={14}/>监控设置</button></section>
+      <div className="external-resource-grid">
+        <section className="panel competitor-watch"><div className="panel-title"><div><h3>竞品品牌与红人动向</h3><p>样例监测数据 · 近 7 天</p></div><button onClick={()=>setActive('competitor')}>进入竞品监控</button></div>{[['Willow','新增 18 位合作红人','职场免手扶','+28%','高'],['Elvie','新增 12 位合作红人','轻薄隐形','+19%','中'],['Medela','新增 7 位合作红人','专业供奶','+8%','中']].map((x,i)=><article key={x[0]}><span className={`competitor-logo c${i}`}>{x[0][0]}</span><div><h4>{x[0]}<em>{x[4]}关注</em></h4><p>{x[1]} · 主攻“{x[2]}”</p><small>红人合作声量 {x[3]}</small></div><div className="competitor-spark">{[42,68,54,76,63,82,91].map((h,j)=><i key={j} style={{height:`${h}%`}}></i>)}</div><button onClick={()=>showToast(`已筛选 ${x[0]} 近 30 天合作红人`)}>查看红人 <ChevronRight size={13}/></button></article>)}</section>
+        <aside className="panel discovery-brief"><div><Sparkles size={17}/><span><small>STARAGENT 市场发现</small><h3>本周值得抢先建联</h3></span></div><b>竞品正在集中占领“专业解释”，但真实职场工作流仍有空位。</b><p>建议优先联系 6 位近期快速增长、尚未与重点竞品深度绑定的场景型红人。</p><button onClick={()=>showToast('已生成 6 位外部红人的优先建联计划')}>生成优先建联名单 <ArrowRight size={13}/></button></aside>
+      </div>
+      <section className="external-candidate-board panel"><div className="external-board-head"><div><h3>外部平台红人候选</h3><p>合规数据源 + 社媒监控 · 尚未沉淀为企业合作资产</p></div><div><button className="active">综合潜力</button><button>竞品合作</button><button>近期增长</button><button>平台分布</button></div></div><div className="external-table-head"><span>红人 / 平台</span><span>发现来源</span><span>近期增长</span><span>互动质量</span><span>竞品关系</span><span>M5 预匹配</span><span>动作</span></div>{marketCandidates.slice(0,4).map((c,i)=><article key={c.id}><span className="external-person"><i>{c.initials}</i><b>{c.name}<small>{c.platform} · {c.market} · {c.followers} 粉丝</small></b></span><span><em>{i<2?'竞品红人监控':'平台增长榜'}</em><small>{c.source}</small></span><strong className="metric-up">{c.growth}</strong><strong>{c.engagement}</strong><span><b>{['Willow · 单次','Elvie · 近期合作','无重点竞品','Medela · 历史'][i]}</b><small>{['可争取','需查排他','优先建联','需风险复核'][i]}</small></span><strong>{c.fit}<small>/100</small></strong><span className="external-actions"><button onClick={()=>showToast(`${c.name} 已加入内部候选池`)}>加入候选</button><button className="solid" onClick={()=>showToast(`已为 ${c.name} 生成个性化建联草稿`)}><Send size={12}/>一键建联</button></span></article>)}</section>
+    </>:<>
     <div className="pool-funnel panel">
       {pools.map((p,i)=><React.Fragment key={p[0]}><button className={pool===p[0]?'active':''} onClick={()=>setPool(p[0])}><span>0{i+1}</span><div><small>{p[2]}</small><b>{p[0]}</b></div><strong>{p[1]}</strong></button>{i<2&&<ArrowRight size={17}/>}</React.Fragment>)}
       <div className="pool-context"><Package size={16}/><span><small>当前匹配产品</small><b>M5 · 职场背奶 · 美国</b></span><button onClick={()=>setActive('productCenter')}>切换</button></div>
@@ -518,6 +548,7 @@ function ActionInfluencerPage({showToast,setActive,setEvidence}) {
       <footer><span className={c.safety==='安全'?'safe':'risk'}><ShieldCheck size={12}/>{c.safety}</span><button onClick={()=>setProfile(c)}>查看 360 画像</button><button className="solid" onClick={()=>{showToast(`已将 ${c.name} 带入合作草稿`);setActive('cooperations')}}>创建合作</button></footer>
     </article>)}</div>
     {selectedIds.length>0&&<div className="selection-dock"><div><span>{selectedIds.length}</span><p><b>位红人已选择</b><small>产品、内容结构与表现数据会一起带入下一步</small></p></div><button onClick={()=>setSelectedIds([])}>清空</button><button onClick={()=>{showToast('已生成 M5 产品匹配方案');setActive('productCenter')}}><Package size={15}/>生成产品匹配</button><button className="primary" onClick={()=>{showToast('合作草稿已创建，并带入所选红人');setActive('cooperations')}}><Handshake size={15}/>批量创建合作</button></div>}
+    </>}
     {profile&&<Influencer360Drawer creator={profile} onClose={()=>setProfile(null)} showToast={showToast} setEvidence={setEvidence}/>} 
   </section>
 }
@@ -557,7 +588,8 @@ function AdsAmplificationPage({showToast,setActive}) {
   const rows=amplificationSources[sourceType]
   const toggle=i=>setSelected(s=>s.includes(i)?s.filter(x=>x!==i):[...s,i])
   return <section className="module-content ads-bridge-page">
-    <PageHeader eyebrow="增长放大 · 广告与素材放大" title="自然内容验证完成后，一键进入广告增长。" desc="合作事项、素材和红人共享授权、表现与归因信息；推送后广告结果会回写内容资产和红人能力模型。" action="查看广告回流" onAction={()=>showToast('已打开广告效果回流视图')}/>
+    <PageHeader eyebrow="增长放大 · 内容资产与广告放大" title="先沉淀内容资产，再把已验证结构推入广告增长。" desc="统一管理内容结构、自然表现、授权、二创与广告迁移；广告结果继续回写内容资产和红人能力模型。" action="上传内容" onAction={()=>showToast('已打开内容资产上传与自动解析')}/>
+    <div className="creative-asset-summary">{[['内容资产','2,486','+126 本月新增',Film],['已验证结构','48','跨红人复现 ≥ 3次',BadgeCheck],['可授权素材','126','覆盖 Meta / TikTok',ShieldCheck],['广告迁移中','18','平均 ROAS 2.86',Megaphone],['素材复用价值','¥684K','节省制作与测试成本',TrendingUp]].map(([l,v,n,I],i)=><button key={l} onClick={()=>i===3?showToast('已筛选正在广告迁移的素材'):showToast(`已打开${l}明细`)}><I size={16}/><span><small>{l}</small><b>{v}</b><em>{n}</em></span></button>)}</div>
     <div className="ad-connection panel"><div><span><Megaphone size={20}/></span><div><small>广告端连接状态</small><b>Meta · TikTok Ads · Amazon DSP 已连接</b><p>账户、像素、授权白名单与归因窗口最近校验于 18 分钟前</p></div></div><em><i></i>连接健康</em><button onClick={()=>showToast('广告端连接与权限均正常')}>检查连接</button></div>
     <div className="amplify-spine panel">{['选择业务对象','校验授权与风险','生成广告素材包','推送广告端','效果回流模型'].map((x,i)=><React.Fragment key={x}><div className={i<2?'done':i===2?'active':''}><span>{i<2?<Check size={12}/>:i+1}</span><b>{x}</b></div>{i<4&&<ArrowRight size={14}/>}</React.Fragment>)}</div>
     <div className="source-type-tabs"><div><h3>选择要放大的对象</h3><p>可以直接从合作事项、素材资产或红人开始</p></div><nav>{Object.keys(amplificationSources).map(x=><button key={x} className={sourceType===x?'active':''} onClick={()=>{setSourceType(x);setSelected([0])}}>{x==='合作事项'?<Handshake size={15}/>:x==='素材资产'?<Film size={15}/>:<Users size={15}/>} {x}<span>{amplificationSources[x].length}</span></button>)}</nav></div>
