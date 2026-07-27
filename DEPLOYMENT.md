@@ -22,10 +22,18 @@
 - [x] 增加 GitHub Actions 自动部署工作流
 - [x] 增加项目与部署说明
 - [x] 完成生产构建验证
-- [ ] 创建 Git 首次提交并添加远程仓库
-- [ ] 推送 `main` 到 GitHub
-- [ ] 确认 Actions 构建与 Pages 部署成功
-- [ ] 回归测试首页、红人资源、产品中心、广告放大和经营驾驶舱
+- [x] 创建 Git 首次提交并添加远程仓库
+- [x] 推送 `main` 到 GitHub
+- [x] 确认 Actions 构建与 Pages 部署成功
+- [x] 回归测试首页、红人资源、产品中心、广告放大和经营驾驶舱
+
+## 首次发布记录
+
+- 首次发布提交：`632183e`
+- GitHub Actions：`Deploy Starlink to GitHub Pages`
+- 首次部署结果：成功
+- 线上回归结果：关键模块通过，浏览器控制台错误为 0
+- 正式地址：`https://liying00700-sketch.github.io/kol_project/`
 
 ## GitHub 仓库设置
 
