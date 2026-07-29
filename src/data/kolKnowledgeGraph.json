@@ -1,0 +1,3659 @@
+{
+  "summary": {
+    "generated_at": "2026-07-29T02:54:36+00:00",
+    "source_tables": 15,
+    "source_groups": 8,
+    "raw_rows": 106185,
+    "deduped_sales_rows": 64995,
+    "unique_sales_orders": 50906,
+    "unique_sample_items": 13355,
+    "nodes": 25856,
+    "edges": 110685,
+    "node_types": {
+      "Project": 11308,
+      "Content": 8830,
+      "Creator": 4425,
+      "Product": 1102,
+      "Channel": 69,
+      "Country": 39,
+      "ProductLine": 38,
+      "Tag": 24,
+      "Category": 11,
+      "Brand": 9,
+      "KnowledgeBase": 1
+    },
+    "relationship_types": {
+      "HAS_TAG": 15653,
+      "DROVE_SALES_FOR": 13801,
+      "GENERATED_SALES_FOR": 12215,
+      "SAMPLED_PRODUCT": 9987,
+      "CREATED": 8830,
+      "DELIVERED_FOR": 8830,
+      "PUBLISHED_ON": 8830,
+      "PARTICIPATED_IN": 7983,
+      "EXECUTED_ON": 7983,
+      "GENERATED_SALES_IN": 4467,
+      "LOCATED_IN": 3241,
+      "VALIDATES_PRODUCT_LINE": 2791,
+      "PERFORMED_IN": 2754,
+      "BELONGS_TO_CATEGORY": 1101,
+      "BELONGS_TO_PRODUCT_LINE": 1098,
+      "OWNED_BY_BRAND": 1096,
+      "MENTIONS_BRAND": 25
+    },
+    "data_quality": {
+      "tag_to_creator": 100.0,
+      "content_to_creator": 100.0,
+      "cost_to_creator": 100.0,
+      "sales_to_creator": 47.9,
+      "sales_to_product": 99.8,
+      "sample_to_product": 100.0,
+      "video_perf_to_content": 83.3
+    },
+    "privacy": {
+      "public_graph_anonymized": true,
+      "excluded_field_count": 13,
+      "raw_identifiers_hashed": true,
+      "buyer_level_records_persisted": false
+    }
+  },
+  "sourceProfiles": [
+    {
+      "name": "kol_tags",
+      "source_files": [
+        "ads_mkt_kol_tag_df.csv"
+      ],
+      "rows": 3260,
+      "columns": 25,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "kol_grade",
+          "null_pct": 89.0
+        },
+        {
+          "column": "potential_level",
+          "null_pct": 75.7
+        },
+        {
+          "column": "fan_active_rate",
+          "null_pct": 55.1
+        },
+        {
+          "column": "coop_avg_interact_rate",
+          "null_pct": 55.1
+        },
+        {
+          "column": "hit_video_cnt",
+          "null_pct": 55.1
+        },
+        {
+          "column": "coop_video_total_play_cnt",
+          "null_pct": 55.1
+        },
+        {
+          "column": "total_order_cnt",
+          "null_pct": 55.1
+        },
+        {
+          "column": "total_gmv_usd",
+          "null_pct": 55.1
+        }
+      ],
+      "date_range": {
+        "field": "ds",
+        "min": "2026-07-27",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 1
+    },
+    {
+      "name": "video_product_perf",
+      "source_files": [
+        "ads_mkt_kol_video_content_product_line_perf_df.csv"
+      ],
+      "rows": 3352,
+      "columns": 17,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "country_code",
+          "null_pct": 1.3
+        },
+        {
+          "column": "country_name",
+          "null_pct": 1.3
+        },
+        {
+          "column": "ds",
+          "null_pct": 0.0
+        },
+        {
+          "column": "data_date",
+          "null_pct": 0.0
+        },
+        {
+          "column": "video_url",
+          "null_pct": 0.0
+        },
+        {
+          "column": "gtm_name",
+          "null_pct": 0.0
+        },
+        {
+          "column": "category_name_level1",
+          "null_pct": 0.0
+        },
+        {
+          "column": "category_name_level2",
+          "null_pct": 0.0
+        }
+      ],
+      "date_range": {
+        "field": "data_date",
+        "min": "2026-07-27",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 0
+    },
+    {
+      "name": "creator_master",
+      "source_files": [
+        "dim_mkt_kol_user_info_df.csv"
+      ],
+      "rows": 3260,
+      "columns": 31,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "frozen_time",
+          "null_pct": 100.0
+        },
+        {
+          "column": "ods_user_id",
+          "null_pct": 100.0
+        },
+        {
+          "column": "daily_size",
+          "null_pct": 99.9
+        },
+        {
+          "column": "daily_size_update_time",
+          "null_pct": 98.7
+        },
+        {
+          "column": "cooperation_time",
+          "null_pct": 95.8
+        }
+      ],
+      "date_range": {
+        "field": "update_time",
+        "min": "2026-07-27",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 10
+    },
+    {
+      "name": "product_master",
+      "source_files": [
+        "dim_pd_spu_info_df.csv"
+      ],
+      "rows": 1101,
+      "columns": 80,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "spu_desc",
+          "null_pct": 100.0
+        },
+        {
+          "column": "uom_id",
+          "null_pct": 100.0
+        },
+        {
+          "column": "write_at",
+          "null_pct": 100.0
+        },
+        {
+          "column": "write_by",
+          "null_pct": 100.0
+        },
+        {
+          "column": "delete_at",
+          "null_pct": 100.0
+        },
+        {
+          "column": "delete_by",
+          "null_pct": 100.0
+        },
+        {
+          "column": "category_code_level5",
+          "null_pct": 100.0
+        },
+        {
+          "column": "category_name_level5",
+          "null_pct": 100.0
+        }
+      ],
+      "date_range": {
+        "field": "update_time",
+        "min": "2026-05-28",
+        "max": "2026-07-24"
+      },
+      "sensitive_field_count": 1
+    },
+    {
+      "name": "sales_orders",
+      "source_files": [
+        "dwb_mkt_kol_sales_order_detail_df_01.csv",
+        "dwb_mkt_kol_sales_order_detail_df_02.csv",
+        "dwb_mkt_kol_sales_order_detail_df_03.csv",
+        "dwb_mkt_kol_sales_order_detail_df_04.csv",
+        "dwb_mkt_kol_sales_order_detail_df_05.csv",
+        "dwb_mkt_kol_sales_order_detail_df_06.csv",
+        "dwb_mkt_kol_sales_order_detail_df_07.csv"
+      ],
+      "rows": 65044,
+      "columns": 56,
+      "duplicate_row_rate": 0.07,
+      "highest_null_columns": [
+        {
+          "column": "promotion_id",
+          "null_pct": 47.3
+        },
+        {
+          "column": "project_code",
+          "null_pct": 8.3
+        },
+        {
+          "column": "channel_home",
+          "null_pct": 6.6
+        },
+        {
+          "column": "country_code",
+          "null_pct": 1.1
+        },
+        {
+          "column": "channel_code",
+          "null_pct": 0.4
+        }
+      ],
+      "date_range": {
+        "field": "order_date",
+        "min": "2026-01-01",
+        "max": "2026-07-28"
+      },
+      "sensitive_field_count": 5
+    },
+    {
+      "name": "content",
+      "source_files": [
+        "dwd_mkt_kol_content_df.csv"
+      ],
+      "rows": 8830,
+      "columns": 22,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "link_id",
+          "null_pct": 100.0
+        },
+        {
+          "column": "brand_code",
+          "null_pct": 99.7
+        },
+        {
+          "column": "video_release_date",
+          "null_pct": 12.9
+        },
+        {
+          "column": "coop_to_publish_days",
+          "null_pct": 12.9
+        },
+        {
+          "column": "ds",
+          "null_pct": 0.0
+        },
+        {
+          "column": "md5_url",
+          "null_pct": 0.0
+        },
+        {
+          "column": "video_url",
+          "null_pct": 0.0
+        },
+        {
+          "column": "project_code",
+          "null_pct": 0.0
+        }
+      ],
+      "date_range": {
+        "field": "video_release_date",
+        "min": "2023-09-06",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 0
+    },
+    {
+      "name": "project_cost",
+      "source_files": [
+        "dwd_mkt_kol_project_cost_df.csv"
+      ],
+      "rows": 7983,
+      "columns": 13,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "end_time",
+          "null_pct": 100.0
+        },
+        {
+          "column": "pay_time",
+          "null_pct": 86.4
+        },
+        {
+          "column": "ds",
+          "null_pct": 0.0
+        },
+        {
+          "column": "project_code",
+          "null_pct": 0.0
+        },
+        {
+          "column": "user_code",
+          "null_pct": 0.0
+        },
+        {
+          "column": "channel",
+          "null_pct": 0.0
+        },
+        {
+          "column": "brand_code",
+          "null_pct": 0.0
+        },
+        {
+          "column": "start_time",
+          "null_pct": 0.0
+        }
+      ],
+      "date_range": {
+        "field": "start_time",
+        "min": "2023-11-10",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 0
+    },
+    {
+      "name": "sample_orders",
+      "source_files": [
+        "dwb_mkt_kol_sample_order_item_df_01_03.csv",
+        "dwb_mkt_kol_sample_order_item_df_03_07.csv"
+      ],
+      "rows": 13355,
+      "columns": 30,
+      "duplicate_row_rate": 0.0,
+      "highest_null_columns": [
+        {
+          "column": "brand_code",
+          "null_pct": 100.0
+        },
+        {
+          "column": "sign_time",
+          "null_pct": 100.0
+        },
+        {
+          "column": "unit_code",
+          "null_pct": 100.0
+        },
+        {
+          "column": "fn_sku",
+          "null_pct": 100.0
+        },
+        {
+          "column": "item_id",
+          "null_pct": 100.0
+        },
+        {
+          "column": "tt_seller_sku",
+          "null_pct": 75.8
+        },
+        {
+          "column": "shipping_code",
+          "null_pct": 24.2
+        },
+        {
+          "column": "delivery_code",
+          "null_pct": 24.2
+        }
+      ],
+      "date_range": {
+        "field": "submit_time",
+        "min": "2026-01-01",
+        "max": "2026-07-27"
+      },
+      "sensitive_field_count": 0
+    }
+  ],
+  "metrics": [
+    {
+      "code": "creator_count",
+      "name": "红人数",
+      "formula": "COUNT(DISTINCT user_code)",
+      "source": "dim_mkt_kol_user_info_df",
+      "boundary": "自然人ID去重"
+    },
+    {
+      "code": "project_count",
+      "name": "合作事项数",
+      "formula": "COUNT(DISTINCT project_code)",
+      "source": "project_cost/content/sales/sample",
+      "boundary": "跨表项目并集"
+    },
+    {
+      "code": "published_content",
+      "name": "上线量",
+      "formula": "COUNT(DISTINCT md5_url)",
+      "source": "dwd_mkt_kol_content_df",
+      "boundary": "已删除内容需业务确认是否排除"
+    },
+    {
+      "code": "play_count",
+      "name": "播放量",
+      "formula": "SUM(play_cnt)",
+      "source": "dwd_mkt_kol_content_df",
+      "boundary": "按内容最新快照汇总"
+    },
+    {
+      "code": "interaction_rate",
+      "name": "互动率",
+      "formula": "SUM(total_interact_cnt)/SUM(play_cnt)",
+      "source": "dwd_mkt_kol_content_df",
+      "boundary": "加权口径"
+    },
+    {
+      "code": "kol_sales",
+      "name": "红人销售额",
+      "formula": "SUM(hongren_sales_amount)",
+      "source": "dwb_mkt_kol_sales_order_detail_df",
+      "boundary": "使用订单表现有归因字段"
+    },
+    {
+      "code": "promotion_cost",
+      "name": "推广花费",
+      "formula": "SUM(total_cost_usd)",
+      "source": "dwd_mkt_kol_project_cost_df",
+      "boundary": "合作费+样品费，币种USD"
+    },
+    {
+      "code": "roi",
+      "name": "ROI",
+      "formula": "红人销售额/推广花费",
+      "source": "sales+project_cost",
+      "boundary": "需避免项目与红人多对多重复成本"
+    },
+    {
+      "code": "sample_delivery",
+      "name": "发样件数",
+      "formula": "SUM(num)",
+      "source": "dwb_mkt_kol_sample_order_item_df",
+      "boundary": "按item id去重"
+    },
+    {
+      "code": "hit_video_rate",
+      "name": "爆款率",
+      "formula": "SUM(is_hit_video)/COUNT(content)",
+      "source": "dwd_mkt_kol_content_df",
+      "boundary": "爆款阈值沿用源系统定义"
+    }
+  ],
+  "nodeTypes": [
+    {
+      "type": "Creator",
+      "label": "红人",
+      "color": "#EC789A",
+      "count": 4425
+    },
+    {
+      "type": "Content",
+      "label": "内容",
+      "color": "#F0A37E",
+      "count": 8830
+    },
+    {
+      "type": "Project",
+      "label": "合作事项",
+      "color": "#B89AD8",
+      "count": 11308
+    },
+    {
+      "type": "Product",
+      "label": "产品",
+      "color": "#76B9AC",
+      "count": 1102
+    },
+    {
+      "type": "ProductLine",
+      "label": "产品线",
+      "color": "#8AA6D9",
+      "count": 38
+    },
+    {
+      "type": "Category",
+      "label": "品类",
+      "color": "#C7A667",
+      "count": 11
+    },
+    {
+      "type": "Country",
+      "label": "国家",
+      "color": "#7EA9CF",
+      "count": 39
+    },
+    {
+      "type": "Channel",
+      "label": "平台",
+      "color": "#A28CC7",
+      "count": 69
+    },
+    {
+      "type": "Brand",
+      "label": "品牌",
+      "color": "#D8838F",
+      "count": 9
+    },
+    {
+      "type": "Tag",
+      "label": "能力标签",
+      "color": "#DBB270",
+      "count": 24
+    }
+  ],
+  "relationshipTypes": [
+    {
+      "type": "HAS_TAG",
+      "count": 15653
+    },
+    {
+      "type": "DROVE_SALES_FOR",
+      "count": 13801
+    },
+    {
+      "type": "GENERATED_SALES_FOR",
+      "count": 12215
+    },
+    {
+      "type": "SAMPLED_PRODUCT",
+      "count": 9987
+    },
+    {
+      "type": "CREATED",
+      "count": 8830
+    },
+    {
+      "type": "DELIVERED_FOR",
+      "count": 8830
+    },
+    {
+      "type": "PUBLISHED_ON",
+      "count": 8830
+    },
+    {
+      "type": "PARTICIPATED_IN",
+      "count": 7983
+    },
+    {
+      "type": "EXECUTED_ON",
+      "count": 7983
+    },
+    {
+      "type": "GENERATED_SALES_IN",
+      "count": 4467
+    },
+    {
+      "type": "LOCATED_IN",
+      "count": 3241
+    },
+    {
+      "type": "VALIDATES_PRODUCT_LINE",
+      "count": 2791
+    }
+  ],
+  "nodes": [
+    {
+      "id": "hub_creator",
+      "type": "EntityHub",
+      "group": "Creator",
+      "label": "红人",
+      "subtitle": "4,425 个实体",
+      "weight": 18,
+      "evidence": 4425,
+      "confidence": 1.0,
+      "color": "#EC789A",
+      "description": "知识本体中的红人实体集合"
+    },
+    {
+      "id": "hub_content",
+      "type": "EntityHub",
+      "group": "Content",
+      "label": "内容",
+      "subtitle": "8,830 个实体",
+      "weight": 18,
+      "evidence": 8830,
+      "confidence": 1.0,
+      "color": "#F0A37E",
+      "description": "知识本体中的内容实体集合"
+    },
+    {
+      "id": "hub_project",
+      "type": "EntityHub",
+      "group": "Project",
+      "label": "合作事项",
+      "subtitle": "11,308 个实体",
+      "weight": 18,
+      "evidence": 11308,
+      "confidence": 1.0,
+      "color": "#B89AD8",
+      "description": "知识本体中的合作事项实体集合"
+    },
+    {
+      "id": "hub_product",
+      "type": "EntityHub",
+      "group": "Product",
+      "label": "产品",
+      "subtitle": "1,102 个实体",
+      "weight": 18,
+      "evidence": 1102,
+      "confidence": 1.0,
+      "color": "#76B9AC",
+      "description": "知识本体中的产品实体集合"
+    },
+    {
+      "id": "hub_productline",
+      "type": "EntityHub",
+      "group": "ProductLine",
+      "label": "产品线",
+      "subtitle": "38 个实体",
+      "weight": 18,
+      "evidence": 38,
+      "confidence": 1.0,
+      "color": "#8AA6D9",
+      "description": "知识本体中的产品线实体集合"
+    },
+    {
+      "id": "hub_category",
+      "type": "EntityHub",
+      "group": "Category",
+      "label": "品类",
+      "subtitle": "11 个实体",
+      "weight": 18,
+      "evidence": 11,
+      "confidence": 1.0,
+      "color": "#C7A667",
+      "description": "知识本体中的品类实体集合"
+    },
+    {
+      "id": "hub_country",
+      "type": "EntityHub",
+      "group": "Country",
+      "label": "国家",
+      "subtitle": "39 个实体",
+      "weight": 18,
+      "evidence": 39,
+      "confidence": 1.0,
+      "color": "#7EA9CF",
+      "description": "知识本体中的国家实体集合"
+    },
+    {
+      "id": "hub_channel",
+      "type": "EntityHub",
+      "group": "Channel",
+      "label": "平台",
+      "subtitle": "69 个实体",
+      "weight": 18,
+      "evidence": 69,
+      "confidence": 1.0,
+      "color": "#A28CC7",
+      "description": "知识本体中的平台实体集合"
+    },
+    {
+      "id": "hub_brand",
+      "type": "EntityHub",
+      "group": "Brand",
+      "label": "品牌",
+      "subtitle": "9 个实体",
+      "weight": 18,
+      "evidence": 9,
+      "confidence": 1.0,
+      "color": "#D8838F",
+      "description": "知识本体中的品牌实体集合"
+    },
+    {
+      "id": "hub_tag",
+      "type": "EntityHub",
+      "group": "Tag",
+      "label": "能力标签",
+      "subtitle": "24 个实体",
+      "weight": 18,
+      "evidence": 24,
+      "confidence": 1.0,
+      "color": "#DBB270",
+      "description": "知识本体中的能力标签实体集合"
+    },
+    {
+      "id": "brand_a5f23992e18538",
+      "type": "Brand",
+      "group": "Brand",
+      "label": "Momcozy",
+      "subtitle": "品牌",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#D8838F"
+    },
+    {
+      "id": "category_70142a619cd674",
+      "type": "Category",
+      "group": "Category",
+      "label": "喂哺用具",
+      "subtitle": "品类",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#C7A667"
+    },
+    {
+      "id": "category_acc6eb1b47b83c",
+      "type": "Category",
+      "group": "Category",
+      "label": "成长耐用",
+      "subtitle": "品类",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#C7A667"
+    },
+    {
+      "id": "category_f5e9ef9d251e7c",
+      "type": "Category",
+      "group": "Category",
+      "label": "母婴电器",
+      "subtitle": "品类",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#C7A667"
+    },
+    {
+      "id": "channel_552af2323382d0",
+      "type": "Channel",
+      "group": "Channel",
+      "label": "instagram",
+      "subtitle": "平台",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#A28CC7"
+    },
+    {
+      "id": "channel_7ea5b52e7a2d45",
+      "type": "Channel",
+      "group": "Channel",
+      "label": "tiktok",
+      "subtitle": "平台",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#A28CC7"
+    },
+    {
+      "id": "channel_eb58f8b661893e",
+      "type": "Channel",
+      "group": "Channel",
+      "label": "instagram,tiktok",
+      "subtitle": "平台",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#A28CC7"
+    },
+    {
+      "id": "content_0e073e1842deaf",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · DEAF",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 4.624007；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_193982c42bfbf7",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · FBF7",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.093216；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_279702ecb762f1",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 62F1",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.828587；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_297dfe9ccd3879",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 3879",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 3.827839；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_2bac78031e33b6",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 33B6",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.427824；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_325274ca55834d",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 834D",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 1.812005；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_3dd0bdff7ddca3",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · DCA3",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.103714；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_4584ae2b612110",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 2110",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 1.314952；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_4b815c62b467d9",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 67D9",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 1.795248；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_5294e9dd43073c",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 073C",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.08549；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_5d326c503c374f",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 374F",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 3.200949；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_61675c9771fcd2",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · FCD2",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 1.391361；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_6a485366054568",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 4568",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 5.30272；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_77d5ccad534cea",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 4CEA",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.104209；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_951d81f7cb9938",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 9938",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 5.173576；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_98ebf79f8ac72a",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · C72A",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 1.951654；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_aa173ad5dc9aed",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 9AED",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.269156；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_abfde3dba31cb4",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 1CB4",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 8.199192；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_ac56c5310ec28c",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · C28C",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 4.233923；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_c4f5924d02f17f",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · F17F",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 5.2808；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_caee88be3037cd",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 37CD",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 0.521929；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "content_fd2ffa65d22076",
+      "type": "Content",
+      "group": "Content",
+      "label": "内容证据 · 2076",
+      "subtitle": "内容表现 · 同层级 P90+",
+      "description": "互动率 6.207546；已关联合作与平台证据",
+      "weight": 8,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#F0A37E"
+    },
+    {
+      "id": "country_048d70f6f9daf3",
+      "type": "Country",
+      "group": "Country",
+      "label": "美国",
+      "subtitle": "国家",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#7EA9CF"
+    },
+    {
+      "id": "country_2730635b3d8e95",
+      "type": "Country",
+      "group": "Country",
+      "label": "法国",
+      "subtitle": "国家",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#7EA9CF"
+    },
+    {
+      "id": "country_8c222d9abe6086",
+      "type": "Country",
+      "group": "Country",
+      "label": "英国",
+      "subtitle": "国家",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#7EA9CF"
+    },
+    {
+      "id": "country_9e78664daebffc",
+      "type": "Country",
+      "group": "Country",
+      "label": "波兰",
+      "subtitle": "国家",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#7EA9CF"
+    },
+    {
+      "id": "creator_2e847ea85b3910",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 3910",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 20 条",
+      "weight": 11,
+      "evidence": 20,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_323e2604737371",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 7371",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 5 条",
+      "weight": 11,
+      "evidence": 5,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_4c9c5088aaa26d",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · A26D",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 3 条",
+      "weight": 11,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_5c2001bf422842",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 2842",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 5 条",
+      "weight": 11,
+      "evidence": 5,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_7fab4cb74f366e",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 366E",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 4 条",
+      "weight": 11,
+      "evidence": 4,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_952a0a0619ffcb",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · FFCB",
+      "subtitle": "红人能力 · 4.5 / 5",
+      "description": "ROI 同层级 P90+；合作证据 13 条",
+      "weight": 11,
+      "evidence": 13,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_9789cdceac5701",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 5701",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 3 条",
+      "weight": 11,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_997dfcbbae3a71",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 3A71",
+      "subtitle": "红人能力 · 4.5 / 5",
+      "description": "ROI 同层级 P90+；合作证据 9 条",
+      "weight": 11,
+      "evidence": 9,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_b02a01d2a5535e",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 535E",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 7 条",
+      "weight": 11,
+      "evidence": 7,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_c002327b61e70c",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · E70C",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P75+；合作证据 16 条",
+      "weight": 11,
+      "evidence": 16,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_c12a20e2645d5d",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 5D5D",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 5 条",
+      "weight": 11,
+      "evidence": 5,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_cd3bf0f4c15fef",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 5FEF",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 19 条",
+      "weight": 11,
+      "evidence": 19,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_d02a717346bc9e",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · BC9E",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P75+；合作证据 5 条",
+      "weight": 11,
+      "evidence": 5,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_d747cbea33c65a",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · C65A",
+      "subtitle": "红人能力 · 4.5 / 5",
+      "description": "ROI 同层级 P90+；合作证据 3 条",
+      "weight": 11,
+      "evidence": 3,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_d8542015500776",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 0776",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 6 条",
+      "weight": 11,
+      "evidence": 6,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_f233280c351c45",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 1C45",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 11 条",
+      "weight": 11,
+      "evidence": 11,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_faab080c623c77",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 3C77",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 18 条",
+      "weight": 11,
+      "evidence": 18,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "creator_ff96feee8650d6",
+      "type": "Creator",
+      "group": "Creator",
+      "label": "红人球 · 50D6",
+      "subtitle": "红人能力 · 4.0 / 5",
+      "description": "ROI 同层级 P90+；合作证据 5 条",
+      "weight": 11,
+      "evidence": 5,
+      "confidence": 0.92,
+      "color": "#EC789A"
+    },
+    {
+      "id": "product_58c27a5139c1ea",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · C1EA",
+      "subtitle": "家居出行",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_5a100f434f9c22",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · 9C22",
+      "subtitle": "喂养电器",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_6069bb27f32210",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · 2210",
+      "subtitle": "BBM PDT",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_6b61e978f2cbff",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · CBFF",
+      "subtitle": "吸奶器",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_88d7ae24f2a52e",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · A52E",
+      "subtitle": "清洗机 PDT",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_b0392cc488ee0d",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · EE0D",
+      "subtitle": "清洗机 PDT",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_b71ebeb6d4286c",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · 286C",
+      "subtitle": "内衣服饰",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_bc966caaf6fc36",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · FC36",
+      "subtitle": "家居出行",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_d8d346882d247b",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · 247B",
+      "subtitle": "吸奶器",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_efa12d81e8def9",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · DEF9",
+      "subtitle": "家居出行",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_f7c8a2514ef690",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · F690",
+      "subtitle": "吸奶器",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "product_fd04b130f65e7c",
+      "type": "Product",
+      "group": "Product",
+      "label": "产品 · 5E7C",
+      "subtitle": "智能母婴电器",
+      "description": "连接产品线、品类、合作、发样和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#76B9AC"
+    },
+    {
+      "id": "productline_5e50a5882926be",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "智能母婴电器",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "productline_64963dde33ed0b",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "内衣服饰",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "productline_66b124b87e57bf",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "家居出行",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "productline_9266fba2bf0a11",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "清洗机 PDT",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "productline_e691b9ebd220fb",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "BBM PDT",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "productline_f0fb11b3458a72",
+      "type": "ProductLine",
+      "group": "ProductLine",
+      "label": "吸奶器",
+      "subtitle": "产品线",
+      "description": "由真实业务数据生成，公开页面已完成标识符脱敏。",
+      "weight": 7,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#8AA6D9"
+    },
+    {
+      "id": "project_107b945c97849b",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 849B",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_1817f335410ec5",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 0EC5",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_235d2c7c625667",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 5667",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_41596ea34d40d1",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 40D1",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_57edc5ce84744e",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 744E",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_5c9a2d321e7eef",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 7EEF",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_6a039efd30ef10",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · EF10",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_97b60da9da0a83",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 0A83",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_c587766666ed9b",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · ED9B",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_e3860e9d6f244d",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 244D",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_eda239ec7927f1",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 27F1",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "project_f6ca3954c864a8",
+      "type": "Project",
+      "group": "Project",
+      "label": "合作事项 · 64A8",
+      "subtitle": "合作履约与成本节点",
+      "description": "连接红人、内容、发样、成本和销售结果。",
+      "weight": 9,
+      "evidence": 4,
+      "confidence": 1.0,
+      "color": "#B89AD8"
+    },
+    {
+      "id": "tag_0433593d3d53d4",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "S",
+      "subtitle": "kol_grade",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_09779c6a0a3a08",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "长尾红人",
+      "subtitle": "fan_level",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_358cc119f191fc",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "中腰部网红",
+      "subtitle": "fan_level",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_3b7736313c1273",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "核心合作期",
+      "subtitle": "coop_status",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_53257250c9fc1a",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "A",
+      "subtitle": "kol_grade",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_58064adfff512b",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "微网红",
+      "subtitle": "fan_level",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_621064ec3c70d5",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "非待激活红人",
+      "subtitle": "lifecycle_status",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_6555c3dd3d6f99",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "待观察型",
+      "subtitle": "kol_type",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_702a0fd6558258",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "综合型",
+      "subtitle": "kol_type",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_7d6fb137127668",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "内容型",
+      "subtitle": "kol_type",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_84c71bc0124c27",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "销售型",
+      "subtitle": "kol_type",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_89adf21af5329a",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "成长期",
+      "subtitle": "coop_status",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_adc3322bdf8df2",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "B",
+      "subtitle": "kol_grade",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_bbe6e54de9afd6",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "0",
+      "subtitle": "is_silent_kol",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    },
+    {
+      "id": "tag_f6bbe350c8e4ca",
+      "type": "Tag",
+      "group": "Tag",
+      "label": "C",
+      "subtitle": "kol_grade",
+      "description": "由现有规则标签表生成，并保留标签维度来源。",
+      "weight": 6,
+      "evidence": 1,
+      "confidence": 1.0,
+      "color": "#DBB270"
+    }
+  ],
+  "edges": [
+    {
+      "source": "hub_brand",
+      "target": "brand_a5f23992e18538",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_category",
+      "target": "category_70142a619cd674",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_category",
+      "target": "category_acc6eb1b47b83c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_category",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_channel",
+      "target": "channel_552af2323382d0",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_channel",
+      "target": "channel_7ea5b52e7a2d45",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_channel",
+      "target": "channel_eb58f8b661893e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_0e073e1842deaf",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_193982c42bfbf7",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_279702ecb762f1",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_297dfe9ccd3879",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_2bac78031e33b6",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_325274ca55834d",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_3dd0bdff7ddca3",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_4584ae2b612110",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_4b815c62b467d9",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_5294e9dd43073c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_5d326c503c374f",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_61675c9771fcd2",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_6a485366054568",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_77d5ccad534cea",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_951d81f7cb9938",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_98ebf79f8ac72a",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_aa173ad5dc9aed",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_abfde3dba31cb4",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_ac56c5310ec28c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_c4f5924d02f17f",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_caee88be3037cd",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_content",
+      "target": "content_fd2ffa65d22076",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_country",
+      "target": "country_048d70f6f9daf3",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_country",
+      "target": "country_2730635b3d8e95",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_country",
+      "target": "country_8c222d9abe6086",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_country",
+      "target": "country_9e78664daebffc",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_2e847ea85b3910",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_323e2604737371",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_4c9c5088aaa26d",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_5c2001bf422842",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_7fab4cb74f366e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_952a0a0619ffcb",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_9789cdceac5701",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_997dfcbbae3a71",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_b02a01d2a5535e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_c002327b61e70c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_c12a20e2645d5d",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_cd3bf0f4c15fef",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_d02a717346bc9e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_d747cbea33c65a",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_d8542015500776",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_f233280c351c45",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_faab080c623c77",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_creator",
+      "target": "creator_ff96feee8650d6",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_58c27a5139c1ea",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_5a100f434f9c22",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_6069bb27f32210",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_6b61e978f2cbff",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_88d7ae24f2a52e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_b0392cc488ee0d",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_b71ebeb6d4286c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_bc966caaf6fc36",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_d8d346882d247b",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_efa12d81e8def9",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_f7c8a2514ef690",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_product",
+      "target": "product_fd04b130f65e7c",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_5e50a5882926be",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_64963dde33ed0b",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_66b124b87e57bf",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_9266fba2bf0a11",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_e691b9ebd220fb",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_productline",
+      "target": "productline_f0fb11b3458a72",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_107b945c97849b",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_1817f335410ec5",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_235d2c7c625667",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_41596ea34d40d1",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_57edc5ce84744e",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_5c9a2d321e7eef",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_6a039efd30ef10",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_97b60da9da0a83",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_c587766666ed9b",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_e3860e9d6f244d",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_eda239ec7927f1",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_project",
+      "target": "project_f6ca3954c864a8",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_0433593d3d53d4",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_358cc119f191fc",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_3b7736313c1273",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_53257250c9fc1a",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_58064adfff512b",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_621064ec3c70d5",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_6555c3dd3d6f99",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_702a0fd6558258",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_7d6fb137127668",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_84c71bc0124c27",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_89adf21af5329a",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_adc3322bdf8df2",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "hub_tag",
+      "target": "tag_f6bbe350c8e4ca",
+      "relation": "CONTAINS",
+      "confidence": 1.0
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "country_9e78664daebffc",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "country_9e78664daebffc",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "country_8c222d9abe6086",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "country_9e78664daebffc",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "country_8c222d9abe6086",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "country_2730635b3d8e95",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "country_048d70f6f9daf3",
+      "relation": "LOCATED_IN",
+      "confidence": 1.0,
+      "source_table": "dim_mkt_kol_user_info_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_f6bbe350c8e4ca",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_5c2001bf422842",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "tag_58064adfff512b",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d02a717346bc9e",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_7d6fb137127668",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_0433593d3d53d4",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_358cc119f191fc",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_53257250c9fc1a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_cd3bf0f4c15fef",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_58064adfff512b",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_6555c3dd3d6f99",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_53257250c9fc1a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c002327b61e70c",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "tag_7d6fb137127668",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d8542015500776",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_58064adfff512b",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_84c71bc0124c27",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_0433593d3d53d4",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_ff96feee8650d6",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_53257250c9fc1a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_7fab4cb74f366e",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_adc3322bdf8df2",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_9789cdceac5701",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_adc3322bdf8df2",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "tag_58064adfff512b",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_323e2604737371",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_2e847ea85b3910",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_58064adfff512b",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_84c71bc0124c27",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_53257250c9fc1a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_997dfcbbae3a71",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_3b7736313c1273",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_adc3322bdf8df2",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_faab080c623c77",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_0433593d3d53d4",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_4c9c5088aaa26d",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_09779c6a0a3a08",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_89adf21af5329a",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_621064ec3c70d5",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_702a0fd6558258",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_0433593d3d53d4",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "creator_d747cbea33c65a",
+      "target": "tag_bbe6e54de9afd6",
+      "relation": "HAS_TAG",
+      "confidence": 1.0,
+      "source_table": "ads_mkt_kol_tag_df"
+    },
+    {
+      "source": "product_6069bb27f32210",
+      "target": "productline_e691b9ebd220fb",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_6069bb27f32210",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_6069bb27f32210",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_88d7ae24f2a52e",
+      "target": "productline_9266fba2bf0a11",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_88d7ae24f2a52e",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_88d7ae24f2a52e",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_f7c8a2514ef690",
+      "target": "productline_f0fb11b3458a72",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_f7c8a2514ef690",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_f7c8a2514ef690",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_6b61e978f2cbff",
+      "target": "productline_f0fb11b3458a72",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_6b61e978f2cbff",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_6b61e978f2cbff",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_fd04b130f65e7c",
+      "target": "productline_5e50a5882926be",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_fd04b130f65e7c",
+      "target": "category_70142a619cd674",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_fd04b130f65e7c",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_b71ebeb6d4286c",
+      "target": "productline_64963dde33ed0b",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_b71ebeb6d4286c",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_bc966caaf6fc36",
+      "target": "productline_66b124b87e57bf",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_bc966caaf6fc36",
+      "target": "category_acc6eb1b47b83c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_bc966caaf6fc36",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_efa12d81e8def9",
+      "target": "productline_66b124b87e57bf",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_efa12d81e8def9",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_b0392cc488ee0d",
+      "target": "productline_9266fba2bf0a11",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_b0392cc488ee0d",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_b0392cc488ee0d",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_58c27a5139c1ea",
+      "target": "productline_66b124b87e57bf",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_58c27a5139c1ea",
+      "target": "category_acc6eb1b47b83c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_58c27a5139c1ea",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_5a100f434f9c22",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_5a100f434f9c22",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_d8d346882d247b",
+      "target": "productline_f0fb11b3458a72",
+      "relation": "BELONGS_TO_PRODUCT_LINE",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_d8d346882d247b",
+      "target": "category_f5e9ef9d251e7c",
+      "relation": "BELONGS_TO_CATEGORY",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "product_d8d346882d247b",
+      "target": "brand_a5f23992e18538",
+      "relation": "OWNED_BY_BRAND",
+      "confidence": 1.0,
+      "source_table": "dim_pd_spu_info_df"
+    },
+    {
+      "source": "creator_c12a20e2645d5d",
+      "target": "project_f6ca3954c864a8",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "project_f6ca3954c864a8",
+      "target": "channel_7ea5b52e7a2d45",
+      "relation": "EXECUTED_ON",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "project_57edc5ce84744e",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "project_57edc5ce84744e",
+      "target": "channel_7ea5b52e7a2d45",
+      "relation": "EXECUTED_ON",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "project_107b945c97849b",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "project_107b945c97849b",
+      "target": "channel_eb58f8b661893e",
+      "relation": "EXECUTED_ON",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "creator_f233280c351c45",
+      "target": "project_c587766666ed9b",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "project_c587766666ed9b",
+      "target": "channel_7ea5b52e7a2d45",
+      "relation": "EXECUTED_ON",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "creator_952a0a0619ffcb",
+      "target": "project_eda239ec7927f1",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "project_eda239ec7927f1",
+      "target": "channel_7ea5b52e7a2d45",
+      "relation": "EXECUTED_ON",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    },
+    {
+      "source": "creator_b02a01d2a5535e",
+      "target": "project_1817f335410ec5",
+      "relation": "PARTICIPATED_IN",
+      "confidence": 1.0,
+      "source_table": "dwd_mkt_kol_project_cost_df"
+    }
+  ],
+  "buildSteps": [
+    {
+      "id": "01",
+      "title": "数据审计",
+      "detail": "识别15份导出表的字段、粒度、日期范围、重复和敏感字段。",
+      "principle": "先确认每行代表什么，再谈关联；错误粒度会造成GMV和成本重复。"
+    },
+    {
+      "id": "02",
+      "title": "主键统一",
+      "detail": "以user_code、project_code、spu_code、video_url构建跨域连接。",
+      "principle": "统一ID是证据链成立的前提，所有公开标识符均不可逆哈希。"
+    },
+    {
+      "id": "03",
+      "title": "本体建模",
+      "detail": "定义红人、内容、合作、产品、品类、平台、国家、标签等实体。",
+      "principle": "本体约束实体和关系语义，避免把标签、指标和事实混成同一层。"
+    },
+    {
+      "id": "04",
+      "title": "关系生成",
+      "detail": "从事实表生成创作、合作、发样、产品验证和销售贡献关系。",
+      "principle": "每条边保留来源表、置信度和上下文，支持回答为什么。"
+    },
+    {
+      "id": "05",
+      "title": "指标语义",
+      "detail": "把红人数、上线量、播放、销售额、成本、ROI等统一为受控口径。",
+      "principle": "智能问数先由指标层精确计算，再由AI解释，不能让模型猜数字。"
+    },
+    {
+      "id": "06",
+      "title": "检索与推荐",
+      "detail": "SQL、向量检索、图遍历和模型评分由StarAgent按问题编排。",
+      "principle": "RAG负责找内容，Graph负责找关系，SQL负责准确，模型负责预测。"
+    }
+  ]
+}

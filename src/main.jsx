@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   Sparkles, LayoutDashboard, Package, Users, Film, Megaphone, MessageCircleMore,
@@ -17,6 +17,8 @@ import './fixes.css'
 import './bi-v2.css'
 import './flow-v3.css'
 import './flow-v4.css'
+import './knowledge-sphere.css'
+import knowledgeGraph from './data/kolKnowledgeGraph.json'
 
 const navGroups = [
   { no:'01', title:'StarAgent 智能工作台', items:[[Sparkles, '智能工作台', 'agent']] },
@@ -219,6 +221,7 @@ function ModulePage({ active, setActive, showToast, setEvidence }) {
   if (active === 'actionInfluencers') return <ActionInfluencerPage showToast={showToast} setActive={setActive} setEvidence={setEvidence}/>
   if (active === 'productCenter') return <ProductCenterPage showToast={showToast} setActive={setActive}/>
   if (active === 'ads') return <AdsAmplificationPage showToast={showToast} setActive={setActive}/>
+  if (active === 'data') return <DataModelPage showToast={showToast} setActive={setActive}/>
   return <AssetPage type={active} showToast={showToast} setActive={setActive}/>
 }
 
@@ -685,6 +688,195 @@ const assetConfig = {
   settings:{eyebrow:'系统设置',title:'让权限、审批与品牌规则在系统中生效。',desc:'配置工作区、成员、数据权限、审批流程和 Agent 安全边界。',stats:[['工作区成员','48'],['自定义角色','6'],['待审批权限','3'],['审计保留','365 天']],columns:['设置项','当前配置','生效范围','最近更新','负责人','状态'],rows:[['红人邀约审批','二级确认','全部市场','今天 10:18','李颖','已启用'],['高额预算审批','≥ ¥50,000','全部 Campaign','7 月 15 日','品牌负责人','已启用'],['敏感数据脱敏','联系方式 / 订单','外部模型','7 月 14 日','数据团队','已启用']]},
 }
 
+const graphTypeLabels = {
+  Creator:'红人', Content:'内容', Project:'合作事项', Product:'产品', ProductLine:'产品线',
+  Category:'品类', Country:'国家', Channel:'平台', Brand:'品牌', Tag:'能力标签', EntityHub:'实体域'
+}
+
+const graphRelationLabels = {
+  CONTAINS:'包含', HAS_TAG:'拥有标签', DROVE_SALES_FOR:'带来销售', GENERATED_SALES_FOR:'产生销售',
+  SAMPLED_PRODUCT:'发样产品', CREATED:'创作', DELIVERED_FOR:'交付于', PUBLISHED_ON:'发布于',
+  PARTICIPATED_IN:'参与合作', EXECUTED_ON:'执行于', GENERATED_SALES_IN:'销售发生于',
+  LOCATED_IN:'位于', VALIDATES_PRODUCT_LINE:'验证产品线', PERFORMED_IN:'表现于',
+  BELONGS_TO_CATEGORY:'属于品类', BELONGS_TO_PRODUCT_LINE:'属于产品线', OWNED_BY_BRAND:'属于品牌',
+  MENTIONS_BRAND:'提及品牌'
+}
+
+const sourceDomainLabels = {
+  kol_tags:'红人能力与经营标签', video_product_perf:'视频—产品线表现', creator_master:'红人主数据',
+  product_master:'SPU 与产品主数据', sales_orders:'红人销售订单', content:'内容表现',
+  project_cost:'合作事项与费用', sample_orders:'合作发样'
+}
+
+const qualityLabels = {
+  tag_to_creator:'标签 → 红人主档', content_to_creator:'内容 → 红人主档', cost_to_creator:'费用 → 红人主档',
+  sales_to_creator:'销售 → 红人主档', sales_to_product:'销售 → 产品主档', sample_to_product:'发样 → 产品主档',
+  video_perf_to_content:'视频产品表现 → 内容'
+}
+
+function formatKnowledgeNumber(value) {
+  const n=Number(value||0)
+  if(n>=1000000) return `${(n/1000000).toFixed(n>=10000000?1:2)}M`
+  if(n>=1000) return `${(n/1000).toFixed(n>=10000?1:2)}K`
+  return n.toLocaleString()
+}
+
+function KnowledgeSphere({nodes,edges,selectedId,onSelect,activeType,search,playing}) {
+  const filteredNodes=useMemo(()=>nodes.filter(node=>{
+    const typeMatch=activeType==='全部'||node.group===activeType
+    const query=search.trim().toLowerCase()
+    const searchMatch=!query||`${node.label} ${node.subtitle} ${node.description}`.toLowerCase().includes(query)
+    return typeMatch&&searchMatch
+  }),[nodes,activeType,search])
+  const [rotation,setRotation]=useState(0.18)
+
+  useEffect(()=>{
+    if(!playing||typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
+    let frame
+    let last=0
+    const animate=(time)=>{
+      if(time-last>46){setRotation(value=>(value+0.007)%(Math.PI*2));last=time}
+      frame=window.requestAnimationFrame(animate)
+    }
+    frame=window.requestAnimationFrame(animate)
+    return()=>window.cancelAnimationFrame(frame)
+  },[playing])
+
+  const positions=useMemo(()=>{
+    const map={}
+    const count=Math.max(filteredNodes.length,2)
+    const golden=Math.PI*(3-Math.sqrt(5))
+    filteredNodes.forEach((node,index)=>{
+      const y=1-(index/(count-1))*2
+      const ring=Math.sqrt(Math.max(0,1-y*y))
+      const theta=golden*index+rotation
+      const x0=Math.cos(theta)*ring
+      const z0=Math.sin(theta)*ring
+      const tilt=.22
+      const y1=y*Math.cos(tilt)-z0*Math.sin(tilt)
+      const z1=y*Math.sin(tilt)+z0*Math.cos(tilt)
+      const perspective=.82+(z1+1)*.18
+      map[node.id]={x:500+x0*342*perspective,y:305+y1*252*perspective,z:z1,scale:perspective}
+    })
+    return map
+  },[filteredNodes,rotation])
+
+  const visibleIds=useMemo(()=>new Set(filteredNodes.map(node=>node.id)),[filteredNodes])
+  const visibleEdges=useMemo(()=>edges.filter(edge=>visibleIds.has(edge.source)&&visibleIds.has(edge.target)).slice(0,230),[edges,visibleIds])
+  const orderedNodes=useMemo(()=>[...filteredNodes].sort((a,b)=>(positions[a.id]?.z||0)-(positions[b.id]?.z||0)),[filteredNodes,positions])
+
+  return <div className="knowledge-sphere-stage" aria-label="红人知识图谱球体">
+    <div className="sphere-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
+    <svg className="sphere-wire" viewBox="0 0 1000 610" preserveAspectRatio="none" aria-hidden="true">
+      <ellipse cx="500" cy="305" rx="354" ry="252"/><ellipse cx="500" cy="305" rx="354" ry="92"/><ellipse cx="500" cy="305" rx="164" ry="252"/>
+      {visibleEdges.map((edge,index)=>{const a=positions[edge.source],b=positions[edge.target];if(!a||!b)return null;const focus=edge.source===selectedId||edge.target===selectedId;return <line key={`${edge.source}-${edge.target}-${index}`} x1={a.x} y1={a.y} x2={b.x} y2={b.y} className={focus?'focused':''}/>})}
+    </svg>
+    <div className="sphere-nodes">
+      {orderedNodes.map(node=>{const p=positions[node.id];if(!p)return null;const size=Math.max(16,Math.min(54,(12+node.weight*1.45)*p.scale));const isHub=node.type==='EntityHub';const selected=node.id===selectedId;return <button
+        key={node.id}
+        type="button"
+        className={`knowledge-ball ${isHub?'hub':''} ${selected?'selected':''}`}
+        style={{'--ball-color':node.color,left:`${p.x/10}%`,top:`${p.y/6.1}%`,width:`${size}px`,height:`${size}px`,opacity:.5+(p.z+1)*.25,zIndex:Math.round((p.z+1)*100)}}
+        title={`${node.label} · ${node.subtitle}`}
+        aria-label={`${node.label}，${node.subtitle}`}
+        onClick={()=>onSelect(node.id)}>
+        <span className="ball-core"></span>
+        {(isHub||selected)&&<span className="ball-copy"><b>{node.label}</b><small>{selected?node.subtitle:''}</small></span>}
+      </button>})}
+    </div>
+    {!filteredNodes.length&&<div className="sphere-empty"><Search size={22}/><b>没有匹配的知识球体</b><span>尝试更换实体类型或搜索词</span></div>}
+    <div className="sphere-axis-label"><CircleDot size={12}/> 真实关系投影 · 球体位置用于探索，不代表因果距离</div>
+  </div>
+}
+
+function DataModelPage({showToast,setActive}) {
+  const [activeType,setActiveType]=useState('全部')
+  const [selectedId,setSelectedId]=useState('hub_creator')
+  const [search,setSearch]=useState('')
+  const [playing,setPlaying]=useState(true)
+  const [detailTab,setDetailTab]=useState('知识证据')
+  const summary=knowledgeGraph.summary
+  const selected=knowledgeGraph.nodes.find(node=>node.id===selectedId)||knowledgeGraph.nodes[0]
+  const nodeMap=useMemo(()=>Object.fromEntries(knowledgeGraph.nodes.map(node=>[node.id,node])),[])
+  const connections=useMemo(()=>knowledgeGraph.edges.filter(edge=>edge.source===selected.id||edge.target===selected.id).map(edge=>{
+    const neighborId=edge.source===selected.id?edge.target:edge.source
+    return {...edge,neighbor:nodeMap[neighborId]}
+  }).filter(item=>item.neighbor).slice(0,8),[selected.id,nodeMap])
+  const qualityEntries=Object.entries(summary.data_quality)
+  const generatedDate=new Date(summary.generated_at).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})
+
+  return <section className="module-content knowledge-page">
+    <PageHeader eyebrow="数据与模型 · 红人知识基座" title="让每一次推荐，都能沿证据找到答案。" desc="15份业务数据已完成实体统一、关系建模与隐私脱敏；知识球体把红人、内容、合作、产品、发样和销售连接成可查询的增长网络。" action="运行知识构建" onAction={()=>showToast('知识构建任务已进入校验队列')}/>
+
+    <div className="knowledge-status-strip">
+      <span><i></i>知识库 v1.0 已就绪</span><p>基于真实数据构建 · 公开视图已脱敏 · 最近生成 {generatedDate}</p><div><ShieldCheck size={15}/>敏感字段未进入模型上下文</div>
+    </div>
+
+    <div className="knowledge-kpis">
+      <article><span><Database size={18}/></span><div><small>已接入数据表</small><b>{summary.source_tables}</b><em>8 个知识域</em></div></article>
+      <article><span><Table size={18}/></span><div><small>原始业务记录</small><b>{formatKnowledgeNumber(summary.raw_rows)}</b><em>已完成粒度审计</em></div></article>
+      <article><span><CircleDot size={18}/></span><div><small>知识实体</small><b>{formatKnowledgeNumber(summary.nodes)}</b><em>11 种节点类型</em></div></article>
+      <article><span><Network size={18}/></span><div><small>可追溯关系</small><b>{formatKnowledgeNumber(summary.edges)}</b><em>17 种事实关系</em></div></article>
+      <article><span><ShoppingBag size={18}/></span><div><small>去重销售订单</small><b>{formatKnowledgeNumber(summary.unique_sales_orders)}</b><em>买家明细不入图</em></div></article>
+    </div>
+
+    <section className="knowledge-explorer panel">
+      <div className="knowledge-explorer-head">
+        <div><span><Sparkles size={14}/> STARLINK KNOWLEDGE SPHERE</span><h2>红人全域知识球体</h2><p>点击球体查看证据；筛选实体域观察红人如何连接内容、合作、产品与经营结果。</p></div>
+        <div className="knowledge-graph-actions"><label><Search size={15}/><input value={search} onChange={event=>setSearch(event.target.value)} placeholder="搜索实体或知识描述"/></label><button onClick={()=>setPlaying(value=>!value)}>{playing?<PauseCircle size={15}/>:<Play size={15}/>} {playing?'暂停旋转':'继续旋转'}</button></div>
+      </div>
+      <div className="knowledge-type-filter">
+        <button className={activeType==='全部'?'active':''} onClick={()=>setActiveType('全部')}><i style={{background:'#F5DDE5'}}></i>全部 <em>{knowledgeGraph.nodes.length}</em></button>
+        {knowledgeGraph.nodeTypes.map(item=><button key={item.type} className={activeType===item.type?'active':''} onClick={()=>{setActiveType(item.type);setSelectedId(`hub_${item.type.toLowerCase()}`)}}><i style={{background:item.color}}></i>{item.label}<em>{formatKnowledgeNumber(item.count)}</em></button>)}
+      </div>
+      <div className="knowledge-explorer-grid">
+        <KnowledgeSphere nodes={knowledgeGraph.nodes} edges={knowledgeGraph.edges} selectedId={selected.id} onSelect={setSelectedId} activeType={activeType} search={search} playing={playing}/>
+        <aside className="knowledge-inspector">
+          <div className="inspector-identity"><span style={{'--node-color':selected.color}}><CircleDot size={18}/></span><div><small>{graphTypeLabels[selected.type]||selected.type}</small><h3>{selected.label}</h3><p>{selected.subtitle}</p></div></div>
+          <div className="inspector-tabs">{['知识证据','相邻关系'].map(tab=><button key={tab} className={detailTab===tab?'active':''} onClick={()=>setDetailTab(tab)}>{tab}</button>)}</div>
+          {detailTab==='知识证据'?<>
+            <div className="inspector-score"><div><small>证据数量</small><b>{formatKnowledgeNumber(selected.evidence)}</b></div><div><small>知识置信度</small><b>{Math.round(selected.confidence*100)}%</b></div></div>
+            <p className="inspector-description">{selected.description}</p>
+            <div className="inspector-provenance"><span><ShieldCheck size={14}/>证据治理</span><p>事实、规则、预测与AI推断分层存储；关系携带来源表和置信度，原始业务ID已不可逆哈希。</p></div>
+            <button className="inspector-primary" onClick={()=>showToast(`${selected.label} 已加入 StarAgent 证据上下文`)}><Sparkles size={15}/>加入 Agent 上下文</button>
+          </>:<div className="inspector-connections">
+            {connections.length?connections.map((item,index)=><button key={`${item.neighbor.id}-${index}`} onClick={()=>setSelectedId(item.neighbor.id)}><span style={{background:item.neighbor.color}}></span><div><small>{graphRelationLabels[item.relation]||item.relation}</small><b>{item.neighbor.label}</b></div><ChevronRight size={14}/></button>):<p>当前公开投影中暂无可展示的相邻节点。</p>}
+          </div>}
+          <button className="inspector-route" onClick={()=>setActive('askData')}>用智能问数查询此实体 <ArrowRight size={14}/></button>
+        </aside>
+      </div>
+    </section>
+
+    <section className="knowledge-chain-section">
+      <div className="section-heading"><div><span className="status-dot"></span><h3>一条推荐证据是如何形成的</h3><small>从业务对象到经营结果的可展开路径</small></div><button onClick={()=>showToast('已打开完整证据路径')}>查看路径明细 <ChevronRight size={14}/></button></div>
+      <div className="knowledge-chain">
+        {[[Users,'红人','能力与受众'],[Film,'内容','结构与表现'],[Handshake,'合作事项','费用与履约'],[Package,'产品','卖点与场景'],[ShoppingBag,'销售结果','订单与归因']].map(([Icon,title,note],index)=><React.Fragment key={title}><article><span><Icon size={19}/></span><b>{title}</b><small>{note}</small></article>{index<4&&<div><i></i><em>{['创作','交付','推广','贡献'][index]}</em><ChevronRight size={13}/></div>}</React.Fragment>)}
+      </div>
+      <p className="knowledge-chain-note"><Info size={15}/><b>证据链不等于因果链。</b>图谱证明对象和业务事件存在可追溯关系；是否具有增量因果，需要归因实验或对照分析进一步验证。</p>
+    </section>
+
+    <div className="knowledge-lower-grid">
+      <section className="panel build-principles"><div className="panel-title"><div><h3>知识库构建过程</h3><p>每一步的操作与原理</p></div><span>6 个阶段</span></div>
+        {knowledgeGraph.buildSteps.map((step,index)=><article key={step.id}><div><span>{step.id}</span>{index<knowledgeGraph.buildSteps.length-1&&<i></i>}</div><section><h4>{step.title}</h4><p>{step.detail}</p><small><Lightbulb size={13}/>{step.principle}</small></section></article>)}
+      </section>
+
+      <section className="panel knowledge-quality"><div className="panel-title"><div><h3>跨表关系覆盖率</h3><p>连接是否足以支撑可信分析</p></div><span className="real-data-badge">真实审计</span></div>
+        <div className="quality-list">{qualityEntries.map(([key,value])=>{const tone=value>=95?'good':value>=75?'warn':'risk';return <div key={key}><span><b>{qualityLabels[key]||key}</b><em className={tone}>{value}%</em></span><div><i className={tone} style={{width:`${value}%`}}></i></div></div>})}</div>
+        <div className="quality-alert"><AlertCircle size={17}/><div><b>当前首要数据治理任务</b><p>销售明细仅 47.9% 的 user_code 命中红人主档。图谱已创建匿名占位实体避免悬空，但要实现稳定复投与ROI归因，仍需补齐销售红人主数据映射。</p></div></div>
+      </section>
+    </div>
+
+    <section className="panel source-registry"><div className="panel-title"><div><h3>知识来源登记</h3><p>15份物理表归入8个知识域，敏感字段不进入模型上下文</p></div><button onClick={()=>showToast('已生成数据质量报告')}><Download size={14}/>导出审计</button></div>
+      <div className="source-card-grid">{knowledgeGraph.sourceProfiles.map(source=><article key={source.name}><div><span><Database size={15}/></span><em>{source.source_files.length} 张表</em></div><h4>{sourceDomainLabels[source.name]||source.name}</h4><p>{source.rows.toLocaleString()} 行 · {source.columns} 个字段</p><small>{source.sensitive_field_count?`已隔离 ${source.sensitive_field_count} 个敏感字段`:'未发现直接敏感字段'}</small><div><i style={{width:`${Math.max(6,100-source.duplicate_row_rate)}%`}}></i></div></article>)}</div>
+    </section>
+
+    <section className="panel metric-registry"><div className="panel-title"><div><h3>智能问数指标语义层</h3><p>大模型只解释受控计算结果，不直接猜测经营数字</p></div><button onClick={()=>setActive('askData')}>打开智能问数 <ArrowRight size={14}/></button></div>
+      <div className="metric-registry-head"><span>指标</span><span>受控公式</span><span>事实来源</span><span>口径限制</span></div>
+      {knowledgeGraph.metrics.map(metric=><div className="metric-registry-row" key={metric.code}><span><b>{metric.name}</b><small>{metric.code}</small></span><code>{metric.formula}</code><span>{metric.source}</span><p>{metric.boundary}</p></div>)}
+    </section>
+  </section>
+}
+
 function AssetPage({ type, showToast, setActive }) {
   const c=assetConfig[type] || assetConfig.contents
   const actionLabel={cooperations:'新建合作',settlements:'申请结算',discounts:'创建折扣',contents:'上传内容',campaigns:'创建 Campaign'}[type] || '创建'
@@ -698,4 +890,6 @@ function AssetPage({ type, showToast, setActive }) {
   </section>
 }
 
-createRoot(document.getElementById('root')).render(<App />)
+const rootElement=document.getElementById('root')
+const appRoot=rootElement.__starlinkRoot||(rootElement.__starlinkRoot=createRoot(rootElement))
+appRoot.render(<App />)
