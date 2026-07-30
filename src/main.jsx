@@ -29,7 +29,7 @@ const navGroups = [
 ]
 
 const pageMeta = {
-  agent: ['01 · StarAgent 智能工作台', '把目标说出来，方案交给星链'], actions: ['02 · 动作中心', '今天需要推进的动作'],
+  agent: ['01 · StarAgent 智能工作台', '把目标说出来，方案交给 Lynn_KOL_StarLink'], actions: ['02 · 动作中心', '今天需要推进的动作'],
   actionInfluencers: ['02 · 动作中心 / 红人资源', '从大资源池到精准合作人选'], productCenter: ['02 · 动作中心 / 产品中心', '从产品策略到匹配与执行'],
   askData: ['04 · BI 中心 / 智能问数', '用自然语言直接问经营数据'], salesConversion: ['04 · BI 中心 / 销售与转化', '看清红人带来的销售效率'],
   dashboard: ['04 · BI 中心 / 经营驾驶舱', '红人营销全域经营驾驶舱'], growthloop: ['Closed-loop operations', '从产品策略到模型回写'], bi: ['BI center', '从数据里找到下一步'],
@@ -70,7 +70,7 @@ function App() {
     <aside className="sidebar">
       <div className="brand">
         <div className="brand-mark"><span></span><span></span><i></i></div>
-        <div><strong>星链</strong><small>红人增长引擎</small></div>
+        <div><strong>Lynn_KOL_StarLink</strong><small>红人增长引擎</small></div>
       </div>
       <button className="workspace-switch"><span className="workspace-dot">L</span><span><b>路特创新</b><small>Momcozy 全球品牌</small></span><ChevronRight size={16}/></button>
       <nav className="domain-nav">
