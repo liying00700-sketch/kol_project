@@ -1,0 +1,704 @@
+{
+  "dictionary_name": "StarLink 外部数据字典",
+  "dictionary_code": "starlink_external_data_dictionary",
+  "schema_version": "1.0.0",
+  "status": "draft",
+  "created_at": "2026-07-30",
+  "scope": {
+    "business_goal": "为红人发现、内容理解、VOC、竞品监控、商业评估和风险审核提供可追溯的外部知识。",
+    "initial_category": "母婴及可穿戴吸奶器",
+    "initial_market": ["US", "CN"],
+    "default_storage_layer": "private",
+    "public_projection_rule": "仅输出聚合、匿名化或不可逆哈希后的字段，不输出账号 Handle、评论者身份、联系方式和原始业务 ID。"
+  },
+  "evidence_classes": [
+    {
+      "code": "observed",
+      "label": "平台观察事实",
+      "definition": "采集时可直接在来源页面或授权接口中观察到的字段。",
+      "default_confidence": 1.0
+    },
+    {
+      "code": "platform_derived",
+      "label": "平台派生",
+      "definition": "由平台直接提供但计算过程不透明的标签、排名或估算。",
+      "default_confidence": 0.9
+    },
+    {
+      "code": "rule_derived",
+      "label": "规则派生",
+      "definition": "由版本化规则从观察事实计算得到的分类、比率或匹配结果。",
+      "default_confidence": 0.85
+    },
+    {
+      "code": "model_inferred",
+      "label": "模型推断",
+      "definition": "由 NLP、视觉模型或推荐模型生成的主题、情绪、意图和预测。",
+      "default_confidence": 0.7
+    },
+    {
+      "code": "licensed_estimate",
+      "label": "授权估算",
+      "definition": "来自合规第三方数据供应商的估算值。",
+      "default_confidence": 0.75
+    }
+  ],
+  "common_record_envelope": {
+    "required_fields": [
+      "record_id",
+      "schema_version",
+      "entity_type",
+      "source_platform",
+      "source_object_id",
+      "source_url",
+      "captured_at",
+      "access_scope",
+      "evidence_class",
+      "confidence",
+      "raw_hash",
+      "ingestion_batch_id"
+    ],
+    "fields": [
+      {
+        "name": "record_id",
+        "type": "string",
+        "description": "StarLink 内部记录 ID，建议使用 ext_<entity>_<hash>。",
+        "example": "ext_content_7f3a92c1"
+      },
+      {
+        "name": "schema_version",
+        "type": "string",
+        "description": "写入时使用的数据字典版本。",
+        "example": "1.0.0"
+      },
+      {
+        "name": "entity_type",
+        "type": "enum",
+        "enum_ref": "entity_types",
+        "description": "记录对应的实体类型。"
+      },
+      {
+        "name": "source_platform",
+        "type": "enum",
+        "enum_ref": "platforms",
+        "description": "数据直接来源平台，不使用转载平台代替原始来源。"
+      },
+      {
+        "name": "source_object_id",
+        "type": "string",
+        "description": "来源平台原始对象 ID；若平台无稳定 ID，使用规范化 URL 哈希。"
+      },
+      {
+        "name": "source_url",
+        "type": "string",
+        "format": "uri",
+        "description": "可回溯到原始证据的规范化链接。"
+      },
+      {
+        "name": "canonical_entity_id",
+        "type": ["string", "null"],
+        "description": "完成实体消歧后关联的 StarLink 统一实体 ID。"
+      },
+      {
+        "name": "published_at",
+        "type": ["string", "null"],
+        "format": "date-time",
+        "description": "来源对象首次发布时间；不得用采集时间代替。"
+      },
+      {
+        "name": "captured_at",
+        "type": "string",
+        "format": "date-time",
+        "description": "本次观察或抓取时间，统一存储为 UTC。"
+      },
+      {
+        "name": "market",
+        "type": ["string", "null"],
+        "description": "ISO 3166-1 alpha-2 市场代码；未知时为 null。",
+        "example": "US"
+      },
+      {
+        "name": "language",
+        "type": ["string", "null"],
+        "description": "BCP 47 语言代码。",
+        "example": "en-US"
+      },
+      {
+        "name": "access_scope",
+        "type": "enum",
+        "enum": ["public", "authorized", "licensed", "restricted"],
+        "description": "采集时的访问和使用范围。"
+      },
+      {
+        "name": "evidence_class",
+        "type": "enum",
+        "enum_ref": "evidence_classes",
+        "description": "事实、规则或模型推断的证据类型。"
+      },
+      {
+        "name": "confidence",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "当前字段或记录的置信度。"
+      },
+      {
+        "name": "collector",
+        "type": "string",
+        "description": "采集器及版本，例如 agent-reach/opencli-reddit。",
+        "example": "agent-reach/opencli-reddit"
+      },
+      {
+        "name": "query_context",
+        "type": ["object", "null"],
+        "description": "发现该对象时的关键词、账号、社区、时间窗和排序方式。"
+      },
+      {
+        "name": "raw_hash",
+        "type": "string",
+        "description": "规范化原始载荷的 SHA-256，用于去重和变更检测。"
+      },
+      {
+        "name": "ingestion_batch_id",
+        "type": "string",
+        "description": "一次采集任务的批次 ID。"
+      },
+      {
+        "name": "freshness_ttl_hours",
+        "type": ["integer", "null"],
+        "description": "该记录在重新采集前的建议有效期。"
+      },
+      {
+        "name": "rights_note",
+        "type": ["string", "null"],
+        "description": "内容保存、展示和再利用限制；原始媒体默认不进入公开层。"
+      }
+    ]
+  },
+  "entity_types": [
+    {
+      "code": "creator",
+      "label": "红人统一实体",
+      "priority": "P0",
+      "description": "跨平台消歧后的自然人、机构或虚拟创作者。",
+      "primary_key": "creator_id",
+      "fields": [
+        {"name": "creator_id", "type": "string", "required": true, "description": "StarLink 统一红人 ID。"},
+        {"name": "entity_kind", "type": "enum", "enum": ["person", "organization", "virtual"], "required": true},
+        {"name": "display_name_private", "type": ["string", "null"], "privacy": "restricted", "description": "仅内部消歧使用，禁止进入公开图谱。"},
+        {"name": "primary_market", "type": ["string", "null"]},
+        {"name": "languages", "type": "array[string]"},
+        {"name": "category_tags", "type": "array[string]"},
+        {"name": "identity_resolution_status", "type": "enum", "enum": ["unresolved", "probable", "verified"]},
+        {"name": "identity_confidence", "type": "number", "minimum": 0, "maximum": 1}
+      ]
+    },
+    {
+      "code": "platform_account",
+      "label": "平台账号",
+      "priority": "P0",
+      "description": "某一平台上的公开账号及其时点状态。",
+      "primary_key": "account_id",
+      "fields": [
+        {"name": "account_id", "type": "string", "required": true},
+        {"name": "creator_id", "type": ["string", "null"], "description": "关联统一红人实体。"},
+        {"name": "platform", "type": "enum", "enum_ref": "platforms", "required": true},
+        {"name": "platform_user_id", "type": ["string", "null"], "privacy": "restricted"},
+        {"name": "handle_private", "type": ["string", "null"], "privacy": "restricted", "description": "公开账号标识也只保存在私有知识层。"},
+        {"name": "profile_url", "type": "string", "format": "uri"},
+        {"name": "bio", "type": ["string", "null"], "privacy": "private"},
+        {"name": "verified", "type": ["boolean", "null"]},
+        {"name": "follower_count", "type": ["integer", "null"], "snapshot_required": true},
+        {"name": "following_count", "type": ["integer", "null"], "snapshot_required": true},
+        {"name": "content_count", "type": ["integer", "null"], "snapshot_required": true},
+        {"name": "account_created_at", "type": ["string", "null"], "format": "date-time"},
+        {"name": "business_contact", "type": "null", "collection_policy": "excluded_by_default"}
+      ]
+    },
+    {
+      "code": "content",
+      "label": "公开内容",
+      "priority": "P0",
+      "description": "帖子、视频、图文、文章、直播回放或评论主帖。",
+      "primary_key": "content_id",
+      "fields": [
+        {"name": "content_id", "type": "string", "required": true},
+        {"name": "account_id", "type": ["string", "null"]},
+        {"name": "content_format", "type": "enum", "enum": ["short_video", "long_video", "image_post", "text_post", "article", "live_replay", "podcast"]},
+        {"name": "title", "type": ["string", "null"], "privacy": "private"},
+        {"name": "caption", "type": ["string", "null"], "privacy": "private"},
+        {"name": "transcript", "type": ["string", "null"], "privacy": "restricted"},
+        {"name": "ocr_text", "type": ["string", "null"], "privacy": "restricted"},
+        {"name": "hashtags", "type": "array[string]"},
+        {"name": "duration_seconds", "type": ["number", "null"]},
+        {"name": "is_sponsored_disclosed", "type": ["boolean", "null"]},
+        {"name": "outbound_urls", "type": "array[string]"},
+        {"name": "raw_media_reference", "type": ["string", "null"], "privacy": "restricted", "description": "默认只保存引用，不复制原始媒体。"},
+        {"name": "deleted_or_unavailable", "type": "boolean"}
+      ]
+    },
+    {
+      "code": "content_semantics",
+      "label": "内容语义",
+      "priority": "P0",
+      "description": "从文本、字幕、画面和上下文中抽取的版本化语义结果。",
+      "primary_key": "semantic_id",
+      "fields": [
+        {"name": "semantic_id", "type": "string", "required": true},
+        {"name": "content_id", "type": "string", "required": true},
+        {"name": "model_or_rule_version", "type": "string", "required": true},
+        {"name": "topics", "type": "array[object]"},
+        {"name": "scenes", "type": "array[object]"},
+        {"name": "pain_points", "type": "array[object]"},
+        {"name": "selling_points", "type": "array[object]"},
+        {"name": "hooks", "type": "array[object]"},
+        {"name": "calls_to_action", "type": "array[object]"},
+        {"name": "brand_mentions", "type": "array[object]"},
+        {"name": "product_mentions", "type": "array[object]"},
+        {"name": "sentiment", "type": ["object", "null"]},
+        {"name": "purchase_intent", "type": ["object", "null"]},
+        {"name": "claim_flags", "type": "array[object]"}
+      ]
+    },
+    {
+      "code": "metric_snapshot",
+      "label": "内容与账号指标快照",
+      "priority": "P0",
+      "description": "播放和互动等随时间变化的数据，禁止覆盖历史快照。",
+      "primary_key": "snapshot_id",
+      "fields": [
+        {"name": "snapshot_id", "type": "string", "required": true},
+        {"name": "subject_type", "type": "enum", "enum": ["platform_account", "content", "retail_listing"]},
+        {"name": "subject_id", "type": "string", "required": true},
+        {"name": "observed_at", "type": "string", "format": "date-time", "required": true},
+        {"name": "view_count", "type": ["integer", "null"]},
+        {"name": "play_count", "type": ["integer", "null"]},
+        {"name": "like_count", "type": ["integer", "null"]},
+        {"name": "comment_count", "type": ["integer", "null"]},
+        {"name": "share_count", "type": ["integer", "null"]},
+        {"name": "save_count", "type": ["integer", "null"]},
+        {"name": "repost_count", "type": ["integer", "null"]},
+        {"name": "follower_count", "type": ["integer", "null"]},
+        {"name": "platform_rank", "type": ["number", "null"]},
+        {"name": "metric_availability", "type": "array[string]", "description": "明确记录平台实际提供了哪些指标。"}
+      ]
+    },
+    {
+      "code": "comment",
+      "label": "用户评论与回复",
+      "priority": "P0",
+      "description": "用于 VOC、需求、疑虑和购买意图研究的公开评论。",
+      "primary_key": "comment_id",
+      "fields": [
+        {"name": "comment_id", "type": "string", "required": true},
+        {"name": "content_id", "type": "string", "required": true},
+        {"name": "parent_comment_id", "type": ["string", "null"]},
+        {"name": "author_pseudonym_id", "type": ["string", "null"], "privacy": "restricted", "description": "使用加盐哈希，不保存评论者 Handle。"},
+        {"name": "body", "type": "string", "privacy": "restricted"},
+        {"name": "like_count", "type": ["integer", "null"]},
+        {"name": "reply_count", "type": ["integer", "null"]},
+        {"name": "is_creator_reply", "type": ["boolean", "null"]},
+        {"name": "voc_topics", "type": "array[object]"},
+        {"name": "sentiment", "type": ["object", "null"]},
+        {"name": "intent", "type": ["object", "null"]},
+        {"name": "experience_stage", "type": ["string", "null"], "description": "考虑、购买、首次使用、长期使用或售后。"}
+      ]
+    },
+    {
+      "code": "audience_snapshot",
+      "label": "受众聚合快照",
+      "priority": "P1",
+      "description": "仅使用平台授权或合规供应商提供的聚合受众数据。",
+      "primary_key": "audience_snapshot_id",
+      "fields": [
+        {"name": "audience_snapshot_id", "type": "string", "required": true},
+        {"name": "account_id", "type": "string", "required": true},
+        {"name": "observed_at", "type": "string", "format": "date-time"},
+        {"name": "country_distribution", "type": "array[object]"},
+        {"name": "language_distribution", "type": "array[object]"},
+        {"name": "age_band_distribution", "type": "array[object]"},
+        {"name": "gender_distribution", "type": "array[object]"},
+        {"name": "interest_distribution", "type": "array[object]"},
+        {"name": "active_time_distribution", "type": "array[object]"},
+        {"name": "minimum_cohort_size", "type": "integer", "default": 100},
+        {"name": "individual_level_data", "type": "null", "collection_policy": "prohibited"}
+      ]
+    },
+    {
+      "code": "brand",
+      "label": "品牌",
+      "priority": "P0",
+      "description": "品牌及其名称、账号和市场别名。",
+      "primary_key": "brand_id",
+      "fields": [
+        {"name": "brand_id", "type": "string", "required": true},
+        {"name": "canonical_name", "type": "string", "required": true},
+        {"name": "aliases", "type": "array[string]"},
+        {"name": "official_domains", "type": "array[string]"},
+        {"name": "official_account_ids", "type": "array[string]"},
+        {"name": "category_ids", "type": "array[string]"},
+        {"name": "markets", "type": "array[string]"}
+      ]
+    },
+    {
+      "code": "product",
+      "label": "外部产品",
+      "priority": "P0",
+      "description": "自有或竞品产品及其规格、卖点和公开宣称。",
+      "primary_key": "product_id",
+      "fields": [
+        {"name": "product_id", "type": "string", "required": true},
+        {"name": "brand_id", "type": "string", "required": true},
+        {"name": "canonical_name", "type": "string", "required": true},
+        {"name": "aliases", "type": "array[string]"},
+        {"name": "model_number", "type": ["string", "null"]},
+        {"name": "category_path", "type": "array[string]"},
+        {"name": "specifications", "type": "object"},
+        {"name": "official_claims", "type": "array[object]"},
+        {"name": "launch_date", "type": ["string", "null"], "format": "date"},
+        {"name": "lifecycle_status", "type": "enum", "enum": ["announced", "active", "discontinued", "recalled", "unknown"]}
+      ]
+    },
+    {
+      "code": "retail_listing",
+      "label": "电商商品页",
+      "priority": "P1",
+      "description": "产品在电商或品牌独立站的市场化承接页面。",
+      "primary_key": "listing_id",
+      "fields": [
+        {"name": "listing_id", "type": "string", "required": true},
+        {"name": "product_id", "type": ["string", "null"]},
+        {"name": "retailer", "type": "string", "required": true},
+        {"name": "seller_name", "type": ["string", "null"]},
+        {"name": "market", "type": "string", "required": true},
+        {"name": "currency", "type": "string"},
+        {"name": "list_price", "type": ["number", "null"], "snapshot_required": true},
+        {"name": "sale_price", "type": ["number", "null"], "snapshot_required": true},
+        {"name": "coupon_text", "type": ["string", "null"], "snapshot_required": true},
+        {"name": "rating", "type": ["number", "null"], "snapshot_required": true},
+        {"name": "review_count", "type": ["integer", "null"], "snapshot_required": true},
+        {"name": "availability", "type": ["string", "null"], "snapshot_required": true},
+        {"name": "category_rank", "type": ["string", "null"], "snapshot_required": true}
+      ]
+    },
+    {
+      "code": "campaign_signal",
+      "label": "外部营销动作",
+      "priority": "P1",
+      "description": "从公开内容中识别的品牌合作、发布节奏、联盟链接和促销动作。",
+      "primary_key": "campaign_signal_id",
+      "fields": [
+        {"name": "campaign_signal_id", "type": "string", "required": true},
+        {"name": "brand_id", "type": ["string", "null"]},
+        {"name": "product_id", "type": ["string", "null"]},
+        {"name": "account_id", "type": ["string", "null"]},
+        {"name": "content_ids", "type": "array[string]"},
+        {"name": "signal_type", "type": "enum", "enum": ["sponsorship", "product_launch", "promotion", "affiliate", "event", "always_on"]},
+        {"name": "disclosure_evidence", "type": "array[string]"},
+        {"name": "discount_code_private", "type": ["string", "null"], "privacy": "private"},
+        {"name": "landing_urls", "type": "array[string]"},
+        {"name": "start_at", "type": ["string", "null"], "format": "date-time"},
+        {"name": "end_at", "type": ["string", "null"], "format": "date-time"}
+      ]
+    },
+    {
+      "code": "trend_signal",
+      "label": "市场与趋势信号",
+      "priority": "P1",
+      "description": "搜索、话题、季节、社区和平台榜单的时点信号。",
+      "primary_key": "trend_signal_id",
+      "fields": [
+        {"name": "trend_signal_id", "type": "string", "required": true},
+        {"name": "topic_id", "type": "string", "required": true},
+        {"name": "signal_type", "type": "enum", "enum": ["search_interest", "social_velocity", "community_volume", "seasonal_event", "platform_rank"]},
+        {"name": "value", "type": "number", "required": true},
+        {"name": "unit", "type": "string", "required": true},
+        {"name": "baseline_value", "type": ["number", "null"]},
+        {"name": "window_start", "type": "string", "format": "date-time"},
+        {"name": "window_end", "type": "string", "format": "date-time"},
+        {"name": "market", "type": ["string", "null"]},
+        {"name": "platform", "type": ["string", "null"]}
+      ]
+    },
+    {
+      "code": "risk_event",
+      "label": "品牌安全与合规风险",
+      "priority": "P1",
+      "description": "可被原始证据支持的账号、内容、品牌或产品风险事件。",
+      "primary_key": "risk_event_id",
+      "fields": [
+        {"name": "risk_event_id", "type": "string", "required": true},
+        {"name": "subject_type", "type": "enum", "enum": ["creator", "platform_account", "content", "brand", "product"]},
+        {"name": "subject_id", "type": "string", "required": true},
+        {"name": "risk_type", "type": "enum", "enum": ["controversy", "policy_violation", "misleading_claim", "undisclosed_sponsorship", "engagement_anomaly", "recall", "legal", "reputation"]},
+        {"name": "severity", "type": "enum", "enum": ["low", "medium", "high", "critical"]},
+        {"name": "status", "type": "enum", "enum": ["unverified", "reviewing", "confirmed", "resolved", "dismissed"]},
+        {"name": "summary", "type": "string", "privacy": "private"},
+        {"name": "evidence_ids", "type": "array[string]"},
+        {"name": "detected_at", "type": "string", "format": "date-time"},
+        {"name": "reviewed_by_human", "type": "boolean"}
+      ]
+    },
+    {
+      "code": "source_evidence",
+      "label": "来源证据",
+      "priority": "P0",
+      "description": "支撑任一实体、关系或结论的来源、片段和版本信息。",
+      "primary_key": "evidence_id",
+      "fields": [
+        {"name": "evidence_id", "type": "string", "required": true},
+        {"name": "source_url", "type": "string", "format": "uri", "required": true},
+        {"name": "source_platform", "type": "enum", "enum_ref": "platforms"},
+        {"name": "captured_at", "type": "string", "format": "date-time", "required": true},
+        {"name": "content_hash", "type": "string", "required": true},
+        {"name": "supporting_excerpt_private", "type": ["string", "null"], "privacy": "restricted"},
+        {"name": "supports_subject_ids", "type": "array[string]"},
+        {"name": "supports_relation_ids", "type": "array[string]"},
+        {"name": "rights_note", "type": ["string", "null"]},
+        {"name": "unavailable_at", "type": ["string", "null"], "format": "date-time"}
+      ]
+    }
+  ],
+  "relation_types": [
+    {"code": "ACCOUNT_OF", "source": "platform_account", "target": "creator", "evidence_required": true},
+    {"code": "CREATED", "source": "creator", "target": "content", "evidence_required": true},
+    {"code": "PUBLISHED_BY", "source": "content", "target": "platform_account", "evidence_required": true},
+    {"code": "HAS_SEMANTICS", "source": "content", "target": "content_semantics", "evidence_required": false},
+    {"code": "HAS_METRIC_SNAPSHOT", "source": ["content", "platform_account", "retail_listing"], "target": "metric_snapshot", "evidence_required": false},
+    {"code": "HAS_COMMENT", "source": "content", "target": "comment", "evidence_required": true},
+    {"code": "REPLIES_TO", "source": "comment", "target": "comment", "evidence_required": true},
+    {"code": "HAS_AUDIENCE_SNAPSHOT", "source": "platform_account", "target": "audience_snapshot", "evidence_required": true},
+    {"code": "MENTIONS_BRAND", "source": ["content", "comment"], "target": "brand", "evidence_required": true},
+    {"code": "MENTIONS_PRODUCT", "source": ["content", "comment"], "target": "product", "evidence_required": true},
+    {"code": "OWNED_BY_BRAND", "source": "product", "target": "brand", "evidence_required": true},
+    {"code": "LISTS_PRODUCT", "source": "retail_listing", "target": "product", "evidence_required": true},
+    {"code": "PARTICIPATED_IN_EXTERNAL_CAMPAIGN", "source": ["creator", "platform_account"], "target": "campaign_signal", "evidence_required": true},
+    {"code": "PROMOTES_PRODUCT", "source": "campaign_signal", "target": "product", "evidence_required": true},
+    {"code": "PROMOTES_BRAND", "source": "campaign_signal", "target": "brand", "evidence_required": true},
+    {"code": "COMPETES_WITH", "source": ["brand", "product"], "target": ["brand", "product"], "evidence_required": true},
+    {"code": "OBSERVED_IN_TREND", "source": ["brand", "product", "content"], "target": "trend_signal", "evidence_required": true},
+    {"code": "HAS_RISK_EVENT", "source": ["creator", "platform_account", "content", "brand", "product"], "target": "risk_event", "evidence_required": true},
+    {"code": "SUPPORTED_BY", "source": "*", "target": "source_evidence", "evidence_required": false}
+  ],
+  "platforms": [
+    {
+      "code": "xiaohongshu",
+      "label": "小红书",
+      "priority": "P0",
+      "primary_objects": ["platform_account", "content", "comment", "metric_snapshot"],
+      "initial_collector_route": "agent-reach/opencli-xiaohongshu",
+      "identifier_notes": "笔记详情必须保留带 xsec_token 的发现链路；不可只保存裸 note_id。",
+      "recommended_frequency": "重点账号每日；普通账号每周；内容发布后 1/3/7/30 天快照"
+    },
+    {
+      "code": "reddit",
+      "label": "Reddit",
+      "priority": "P0",
+      "primary_objects": ["content", "comment", "metric_snapshot"],
+      "initial_collector_route": "agent-reach/opencli-reddit",
+      "identifier_notes": "保存 post_id、subreddit、permalink 和评论层级。",
+      "recommended_frequency": "专题搜索每周；代表帖评论在 1/7/30 天补采"
+    },
+    {
+      "code": "bilibili",
+      "label": "B站",
+      "priority": "P0",
+      "primary_objects": ["platform_account", "content", "content_semantics", "comment", "metric_snapshot"],
+      "initial_collector_route": "agent-reach/bili-cli+opencli",
+      "identifier_notes": "以 BV 号为内容稳定标识，字幕和视频元数据分开存证。",
+      "recommended_frequency": "重点关键词每周；重点视频 1/3/7/30 天快照"
+    },
+    {
+      "code": "twitter",
+      "label": "X / Twitter",
+      "priority": "P1",
+      "primary_objects": ["platform_account", "content", "comment", "metric_snapshot", "trend_signal"],
+      "initial_collector_route": "agent-reach/twitter-cli-or-opencli",
+      "identifier_notes": "保存 tweet_id、conversation_id 和引用/回复关系。",
+      "recommended_frequency": "品牌与风险关键词每日；账号时间线每周"
+    },
+    {
+      "code": "instagram",
+      "label": "Instagram",
+      "priority": "P0",
+      "primary_objects": ["platform_account", "content", "metric_snapshot", "campaign_signal"],
+      "initial_collector_route": "agent-reach/opencli-instagram",
+      "identifier_notes": "账号 ID 与 Handle 分开；Handle 变化不能生成新红人。",
+      "recommended_frequency": "候选账号每周；重点合作账号每日"
+    },
+    {
+      "code": "facebook",
+      "label": "Facebook",
+      "priority": "P1",
+      "primary_objects": ["platform_account", "content", "comment", "campaign_signal"],
+      "initial_collector_route": "agent-reach/opencli-facebook",
+      "identifier_notes": "群组访问范围必须写入 access_scope，封闭群组内容不得进入公开层。",
+      "recommended_frequency": "授权群组与品牌页每周"
+    },
+    {
+      "code": "tiktok",
+      "label": "TikTok",
+      "priority": "P0",
+      "primary_objects": ["platform_account", "content", "metric_snapshot", "campaign_signal", "trend_signal"],
+      "initial_collector_route": "authorized_connector_required",
+      "identifier_notes": "优先使用稳定的内部 content ID；短链需解析为规范化 URL。",
+      "recommended_frequency": "重点账号每日；内容发布后 1/3/7/30 天快照"
+    },
+    {
+      "code": "youtube",
+      "label": "YouTube",
+      "priority": "P0",
+      "primary_objects": ["platform_account", "content", "content_semantics", "comment", "metric_snapshot"],
+      "initial_collector_route": "agent-reach/youtube",
+      "identifier_notes": "以 channel_id 和 video_id 为稳定标识。",
+      "recommended_frequency": "重点账号每周；重点视频 1/7/30 天快照"
+    },
+    {
+      "code": "ecommerce",
+      "label": "电商与品牌官网",
+      "priority": "P1",
+      "primary_objects": ["product", "retail_listing", "metric_snapshot", "comment"],
+      "initial_collector_route": "authorized_or_public_web_connector",
+      "identifier_notes": "平台、市场、seller 和 listing ID 共同确定商品页。",
+      "recommended_frequency": "价格与库存每日；评分与评论每周"
+    },
+    {
+      "code": "web",
+      "label": "公开网页与新闻",
+      "priority": "P1",
+      "primary_objects": ["brand", "product", "campaign_signal", "risk_event", "source_evidence"],
+      "initial_collector_route": "agent-reach/exa+jina-reader",
+      "identifier_notes": "优先保存 canonical URL、发布日期和页面内容哈希。",
+      "recommended_frequency": "品牌与产品监控每日；基础资料每月复核"
+    },
+    {
+      "code": "regulatory",
+      "label": "监管与官方机构",
+      "priority": "P1",
+      "primary_objects": ["product", "risk_event", "source_evidence"],
+      "initial_collector_route": "official_source_connector",
+      "identifier_notes": "只使用官方公告、法规或可验证的一手来源。",
+      "recommended_frequency": "每周监控，重大事件即时更新"
+    }
+  ],
+  "controlled_enums": {
+    "priority": ["P0", "P1", "P2"],
+    "identity_resolution_status": ["unresolved", "probable", "verified"],
+    "sentiment": ["positive", "neutral", "negative", "mixed", "unknown"],
+    "intent": ["awareness", "consideration", "purchase", "usage", "support", "advocacy", "churn", "unknown"],
+    "experience_stage": ["considering", "purchased", "first_use", "long_term_use", "after_sales", "unknown"],
+    "content_lifecycle": ["new", "growing", "stable", "declining", "unavailable"],
+    "collection_status": ["discovered", "queued", "collected", "normalized", "resolved", "enriched", "quarantined", "published"]
+  },
+  "identity_resolution_rules": [
+    {
+      "rule_id": "IR-001",
+      "description": "平台稳定用户 ID 完全一致时合并为同一 platform_account。",
+      "confidence": 1.0
+    },
+    {
+      "rule_id": "IR-002",
+      "description": "账号主页明确互链，且名称、头像或简介至少两项一致时，可标记为 probable 的同一 creator。",
+      "confidence": 0.9
+    },
+    {
+      "rule_id": "IR-003",
+      "description": "仅 Handle 相同不得自动合并跨平台红人。",
+      "confidence": 0.0
+    },
+    {
+      "rule_id": "IR-004",
+      "description": "品牌和产品使用规范名、官方域名、型号及别名字典共同消歧。",
+      "confidence": 0.95
+    }
+  ],
+  "privacy_and_rights_rules": [
+    {
+      "rule_id": "PR-001",
+      "rule": "不采集或推断评论者的真实身份、联系方式、精确地址、健康身份或家庭成员信息。"
+    },
+    {
+      "rule_id": "PR-002",
+      "rule": "账号 Handle、公开昵称、评论正文、字幕和 OCR 只进入私有或受限层；公开层仅展示匿名和聚合结果。"
+    },
+    {
+      "rule_id": "PR-003",
+      "rule": "封闭群组、付费内容和需授权数据必须记录 access_scope，不得越权传播。"
+    },
+    {
+      "rule_id": "PR-004",
+      "rule": "原始媒体默认只保存来源引用和内容哈希；只有具备明确权利时才保存副本。"
+    },
+    {
+      "rule_id": "PR-005",
+      "rule": "儿童相关内容不得建立儿童个体画像；只允许合规的聚合主题分析。"
+    },
+    {
+      "rule_id": "PR-006",
+      "rule": "模型推断不得覆盖观察事实；必须保留模型版本、置信度和人工复核状态。"
+    }
+  ],
+  "quality_rules": [
+    {
+      "rule_id": "DQ-001",
+      "severity": "error",
+      "rule": "所有记录必须包含 source_url、captured_at、raw_hash 和 ingestion_batch_id。"
+    },
+    {
+      "rule_id": "DQ-002",
+      "severity": "error",
+      "rule": "指标类字段必须写入 metric_snapshot，不得覆盖实体当前值而丢失历史。"
+    },
+    {
+      "rule_id": "DQ-003",
+      "severity": "error",
+      "rule": "published_at 与 captured_at 必须分列，且 captured_at 不得早于已确认的 published_at。"
+    },
+    {
+      "rule_id": "DQ-004",
+      "severity": "warning",
+      "rule": "跨平台 creator 合并置信度低于 0.9 时必须进入人工复核队列。"
+    },
+    {
+      "rule_id": "DQ-005",
+      "severity": "error",
+      "rule": "model_inferred 记录必须包含模型或规则版本及 confidence。"
+    },
+    {
+      "rule_id": "DQ-006",
+      "severity": "warning",
+      "rule": "来源页面失效时保留 unavailable_at 和原始内容哈希，不删除历史证据关系。"
+    },
+    {
+      "rule_id": "DQ-007",
+      "severity": "error",
+      "rule": "任何公开投影不得包含 privacy 为 restricted 的字段。"
+    }
+  ],
+  "initial_collection_scope": {
+    "brands": ["Momcozy", "Willow", "Elvie", "Medela"],
+    "markets": ["US", "CN"],
+    "lookback_days": 365,
+    "high_frequency_window_days": 90,
+    "p0_platforms": ["reddit", "xiaohongshu", "bilibili", "instagram", "tiktok", "youtube"],
+    "p0_entities": [
+      "creator",
+      "platform_account",
+      "content",
+      "content_semantics",
+      "metric_snapshot",
+      "comment",
+      "brand",
+      "product",
+      "source_evidence"
+    ],
+    "acceptance_criteria": [
+      "每条内容可追溯到来源 URL、平台对象 ID 和采集时间。",
+      "所有表现指标以时间快照保存。",
+      "品牌与产品提及完成别名消歧并携带置信度。",
+      "评论作者只使用不可逆伪匿名 ID。",
+      "观察事实、规则派生和模型推断可被明确区分。",
+      "P0 数据可映射到 StarLink 现有 Creator、Content、Brand、Product、Channel 节点。"
+    ]
+  }
+}

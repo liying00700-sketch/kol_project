@@ -637,6 +637,15 @@ def build() -> None:
 4. `private/metric_dictionary.json`：智能问数使用的指标语义。
 5. `src/data/kolKnowledgeGraph.json`：公开演示使用的匿名图谱投影。
 
+## 专题研究补充
+
+- `private/research/reddit/momcozy/2026-07-30/`：Momcozy Reddit 公开讨论调研，包含原始搜索、代表帖评论、去重后的帖子/评论 CSV 与 JSON，以及人工复核洞察。该数据只进入私有知识层，不进入公开演示图谱。
+
+## 外部数据层
+
+- [`external_data_dictionary_v1.md`](./external_data_dictionary_v1.md)：StarLink 外部数据字典 v1，供业务、数据与采集团队共同评审。
+- [`external_data_dictionary_v1.json`](./external_data_dictionary_v1.json)：机器可读数据契约，定义统一记录信封、实体、关系、平台路由、隐私规则和质量门槛。
+
 ## 隐私规则
 
 知识构建过程读取邮箱、联系方式等字段仅用于识别其敏感性，不将这些字段写入任何图谱产物。公开页面不包含姓名、邮箱、地址、买家邮箱、账号Handle或原始业务ID；红人、合作、内容ID均使用不可逆哈希并显示为匿名球体。

@@ -11,9 +11,13 @@ import {
   AlertCircle, CheckCircle, Lightbulb, Gauge, Table, Upload, BadgeCheck,
   PauseCircle, Ban, Receipt, Percent, Boxes, CircleDollarSign, Radar, CircleDot
 } from 'lucide-react'
+import { AgentDetailPage, AgentLauncherRail, KnowledgeRulesPage } from './AgentPages'
 import './styles.css'
 import './modules.css'
 import './fixes.css'
+import './agents.css'
+import './content-insight.css'
+import './content-insight-import.css'
 import './bi-v2.css'
 import './flow-v3.css'
 import './flow-v4.css'
@@ -21,7 +25,7 @@ import './knowledge-sphere.css'
 import knowledgeGraph from './data/kolKnowledgeGraph.json'
 
 const navGroups = [
-  { no:'01', title:'StarAgent 智能工作台', items:[[Sparkles, '智能工作台', 'agent']] },
+  { no:'01', title:'StarAgent 智能工作台', items:[[Sparkles, '多 Agent 编排', 'agent'], [Film, '内容洞察 Agent', 'contentInsightAgent'], [MessageCircleMore, '舆情与竞品 Agent', 'sentimentAgent'], [Users, '红人推荐 Agent', 'creatorRecommendAgent'], [FileText, '内容生产 Agent', 'contentProductionAgent'], [BarChart3, '经营复盘 Agent', 'businessReviewAgent'], [Database, '知识与规则中枢', 'knowledgeRules']] },
   { no:'02', title:'动作中心', items:[[ClipboardCheck, '待办与快捷动作', 'actions'], [Users, '红人资源', 'actionInfluencers'], [Package, '产品中心', 'productCenter'], [Handshake, '合作管理', 'cooperations'], [CircleDollarSign, '费用结算', 'settlements'], [Percent, '折扣码管理', 'discounts'], [Layers, 'Campaign 管理', 'campaigns']] },
   { no:'03', title:'增长放大', items:[[Network, '品牌影响', 'brand'], [Route, '跨平台引流', 'crosschannel'], [Megaphone, '内容资产与广告放大', 'ads'], [Brain, 'VOC 与用户心智', 'voc']] },
   { no:'04', title:'BI 中心', items:[[LayoutDashboard, '经营驾驶舱', 'dashboard'], [Sparkles, '智能问数', 'askData'], [ShoppingBag, '销售与转化', 'salesConversion'], [Users, '红人资产', 'influencers'], [Boxes, '合作资产', 'cooperationAsset'], [MessageCircleMore, '消费者资产', 'consumer'], [Radar, '竞品监控', 'competitor'], [BarChart3, 'Campaign 复盘', 'campaign']] },
@@ -42,6 +46,9 @@ const pageMeta = {
   consumer: ['04 · BI 中心 / 消费者资产', '把每一次反馈沉淀为人群与心智资产'], competitor: ['04 · BI 中心 / 竞品监控', '持续看见竞品、红人与内容策略变化'],
   campaigns: ['02 · 动作中心 / Campaign 管理', 'Campaign 计划与执行'], campaign: ['04 · BI 中心 / Campaign 复盘', '复盘真正创造的全域价值'],
   data: ['05 · 管理 / 数据与模型', '数据、指标与模型可信基座'], settings: ['05 · 管理 / 系统设置', '工作区、权限与审批设置'],
+  contentInsightAgent: ['01 · StarAgent / 内容洞察', '看懂内容结构、评论反馈与素材价值'], sentimentAgent: ['01 · StarAgent / 舆情与竞品', '从市场信号里识别机会与风险'],
+  creatorRecommendAgent: ['01 · StarAgent / 红人推荐', '可解释地找到适合当前任务的红人'], contentProductionAgent: ['01 · StarAgent / 内容生产', '从结构化 Brief 到可审阅脚本初稿'],
+  businessReviewAgent: ['01 · StarAgent / 经营复盘', '把数据事实、原因假设与行动分开'], knowledgeRules: ['01 · StarAgent / 共用底座', '统一知识、指标与业务规则'],
 }
 
 const creators = [
@@ -50,12 +57,13 @@ const creators = [
   { id: 3, name: '阿Moon的日常', handle: '生活方式 · 新手妈妈', initials: 'M', color: '#C9C3E1', score: 86, cost: 1500, role: '真实体验', reach: '9.8万', reason: '真实生活叙事完整，评论区关于便携和夜间使用的讨论密度高。', evidence: '有效评论样本 426 条', risk: '需确认授权' },
 ]
 
-const quickPrompts = ['找适合新品传播的红人', '生成红人 + 产品 + 视频方案', '问本月销售与 ROI']
+const quickPrompts = ['找适合新品传播的红人', '分析一条内容为什么有效', '生成红人 + 产品 + 视频方案', '问本月销售与 ROI']
 
 function App() {
   const [active, setActive] = useState('agent')
-  const [query, setQuery] = useState('为 M5 在美国市场做职场背奶传播，预算 1 万元，优先建立场景记忆并沉淀可授权素材。')
-  const [submitted, setSubmitted] = useState(true)
+  const [query, setQuery] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [selectedAgent, setSelectedAgent] = useState(null)
   const [selected, setSelected] = useState([1, 2, 3])
   const [evidence, setEvidence] = useState(null)
   const [outreach, setOutreach] = useState(false)
@@ -64,7 +72,8 @@ function App() {
 
   const total = useMemo(() => creators.filter(c => selected.includes(c.id)).reduce((s, c) => s + c.cost, 0), [selected])
   const showToast = (text) => { setToast(text); setTimeout(() => setToast(''), 2400) }
-  const submit = () => { if (!query.trim()) return; setSubmitted(true); showToast('已按传播目标重新生成方案') }
+  const submit = () => { if (!query.trim()) return; setSubmitted(true); showToast(selectedAgent ? `已交给${selectedAgent.label}，结果等待人工确认` : '星链已自动编排子智能体') }
+  const invokeAgent = (agent) => { setSelectedAgent(agent); setQuery(agent.prompt); setSubmitted(false); showToast(`${agent.label}已挂载，补充任务后即可发送`) }
 
   return <div className="app-shell">
     <aside className="sidebar">
@@ -93,16 +102,18 @@ function App() {
         <div className="top-actions"><button title="搜索"><Search size={19}/></button><button title="通知" className="notice"><Bell size={19}/><i></i></button><span className="date">7 月 21 日 · 周二</span></div>
       </header>
 
-      {active === 'agent' ? <section className="content">
-        <div className="hero-agent">
-          <div className="orbit" aria-hidden="true"><i></i><i></i><i></i><b><Sparkles size={22}/></b></div>
-          <div className="agent-copy"><span className="eyebrow"><i></i> STARAGENT ONLINE</span><h2>今天想推进什么？</h2><p>找红人、找素材、做方案，或者直接问一个经营问题。</p></div>
-          <div className="prompt-box">
-            <textarea value={query} onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submit()}}} aria-label="向 StarAgent 描述任务" />
-            <div className="prompt-tools"><div><button><Plus size={17}/> 添加产品</button><button><Link2 size={16}/> 引用数据</button></div><button className="send" onClick={submit} aria-label="发送"><ArrowUp size={19}/></button></div>
+      {active === 'agent' ? <section className="content star-agent-home">
+        <section className="star-console-hero">
+          <div className="star-console-brand"><div className="star-core"><Sparkles size={24}/><i></i></div><div><span>LYNN_KOL_STARLINK</span><h2>星链智能体</h2><p>说清目标，或直接调用一个子智能体。</p></div></div>
+          <div className="star-console-context"><button><Layers size={14}/> 路特创新 · Momcozy <ChevronDown size={13}/></button><button><Network size={14}/> 星链智能编排 <ChevronDown size={13}/></button><span><i></i> 6 个子智能体可用</span></div>
+          <div className="star-composer">
+            {selectedAgent&&<div className="mounted-agent"><Sparkles size={13}/><span>正在调用</span><b>{selectedAgent.label}</b><button onClick={()=>setSelectedAgent(null)} aria-label="取消指定子智能体"><X size={12}/></button></div>}
+            <textarea value={query} placeholder="描述你想推进的红人增长任务…" onChange={e=>setQuery(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submit()}}} aria-label="向星链智能体描述任务" />
+            <div className="star-composer-tools"><div><button><Plus size={16}/> 添加产品</button><button><Link2 size={15}/> 引用业务数据</button><button><ShieldCheck size={15}/> 知识规则已启用</button></div><div><span>受控编排 · 关键动作人工确认</span><button className="star-send" onClick={submit} aria-label="发送给星链智能体"><ArrowUp size={18}/></button></div></div>
           </div>
-          <div className="quick-prompts">{quickPrompts.map(x=><button key={x} onClick={()=>{setQuery(x);showToast('已填入任务，可继续补充条件')}}>{x}<ChevronRight size={14}/></button>)}</div>
-        </div>
+          <AgentLauncherRail selected={selectedAgent?.key} onInvoke={invokeAgent} onOpen={setActive}/>
+          <div className="star-quick-prompts"><span>可以这样开始</span>{quickPrompts.map(x=><button key={x} onClick={()=>{setSelectedAgent(null);setQuery(x);setSubmitted(false)}}>{x}<ChevronRight size={12}/></button>)}</div>
+        </section>
 
         {submitted && <>
           <section className="understanding-card">
@@ -207,6 +218,8 @@ function PageHeader({ eyebrow, title, desc, action='导出报告', onAction }) {
 }
 
 function ModulePage({ active, setActive, showToast, setEvidence }) {
+  if (['contentInsightAgent','sentimentAgent','creatorRecommendAgent','contentProductionAgent','businessReviewAgent'].includes(active)) return <AgentDetailPage type={active} showToast={showToast}/>
+  if (active === 'knowledgeRules') return <KnowledgeRulesPage showToast={showToast}/>
   if (active === 'dashboard') return <DashboardPage showToast={showToast} setEvidence={setEvidence} setActive={setActive}/>
   if (active === 'askData') return <AskDataPage showToast={showToast} setActive={setActive}/>
   if (active === 'salesConversion') return <SalesConversionPage showToast={showToast} setActive={setActive}/>
